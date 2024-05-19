@@ -45,15 +45,15 @@ void DynamicArray<T>::Set(size_t index, T value) {
 template<class T>
 void DynamicArray<T>::Resize(size_t newSize) {
     T* newData = new T[newSize];
-    if (newSize < this->size_) {
+    if (newSize < size_) {
         for (size_t i = 0; i < newSize; ++i) {
             newData[i] = data_[i];
         }
     } else {
-        for (size_t i = 0; i < this->size_; ++i) {
+        for (size_t i = 0; i < size_; ++i) {
             newData[i] = data_[i];
         }
-        for (size_t i = this->size_; i < newSize; ++i) {
+        for (size_t i = size_; i < newSize; ++i) {
             newData[i] = T();
         }
     }

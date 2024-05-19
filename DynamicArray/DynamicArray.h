@@ -1,3 +1,5 @@
+#pragma once
+
 #ifndef LAB2_DYNAMICARRAY_H
 #define LAB2_DYNAMICARRAY_H
 
