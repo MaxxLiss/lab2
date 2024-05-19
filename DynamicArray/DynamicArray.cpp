@@ -1,21 +1,30 @@
 #include "DynamicArray.h"
 
 template<class T>
-DynamicArray<T>::DynamicArray(size_t size) : size_(size), data_(new T[size_]) {
+DynamicArray<T>::DynamicArray(size_t size)
+    : size_(size)
+    , capacity_(2 * size_)
+    , data_(new T[capacity_]) {
     for (size_t i = 0; i < size_; ++i) {
         data_[i] = T();
     }
 }
 
 template<class T>
-DynamicArray<T>::DynamicArray(T* items, size_t count) : size_(count), data_(new T[size_]) {
+DynamicArray<T>::DynamicArray(T* items, size_t count)
+    : size_(count)
+    , capacity_(2 * size_)
+    , data_(new T[capacity_]) {
     for (size_t i = 0; i < size_; ++i) {
         data_[i] = items[i];
     }
 }
 
 template<class T>
-DynamicArray<T>::DynamicArray(const DynamicArray<T> &dynamicArray) : size_(dynamicArray.size_), data_(new T[size_]) {
+DynamicArray<T>::DynamicArray(const DynamicArray<T> &dynamicArray)
+    : size_(dynamicArray.size_)
+    , capacity_(dynamicArray.capacity_)
+    , data_(new T[capacity_]) {
 //     meow meow meow mewoew meoowoowmeow
     for (size_t i = 0; i < size_; ++i) {
         data_[i] = dynamicArray.data_[i];
@@ -44,18 +53,26 @@ void DynamicArray<T>::Set(size_t index, T value) {
 
 template<class T>
 void DynamicArray<T>::Resize(size_t newSize) {
-    T* newData = new T[newSize];
     if (newSize < size_) {
-        for (size_t i = 0; i < newSize; ++i) {
-            newData[i] = data_[i];
-        }
-    } else {
-        for (size_t i = 0; i < size_; ++i) {
-            newData[i] = data_[i];
-        }
+        size_ = newSize;
+        return;
+    }
+
+    if (newSize <= capacity_) {
         for (size_t i = size_; i < newSize; ++i) {
-            newData[i] = T();
+            data_[i] = T();
         }
+        size_ = newSize;
+        return;
+    }
+
+    capacity_ = newSize * 2;
+    T* newData = new T[capacity_];
+    for (size_t i = 0; i < size_; ++i) {
+        newData[i] = data_[i];
+    }
+    for (size_t i = size_; i < newSize; ++i) {
+        newData[i] = T();
     }
 
     delete[] data_;

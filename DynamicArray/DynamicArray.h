@@ -25,7 +25,7 @@ public:
     void Resize(size_t newSize);
 
 private:
-    size_t size_;
+    size_t size_, capacity_;
     T* data_;
 };
 
