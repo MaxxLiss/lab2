@@ -7,6 +7,9 @@
 
 template<class T>
 class DynamicArray {
+private:
+    void Fill(T* data, size_t size, T value = T());
+
 public:
     DynamicArray(T* items, size_t count);
 
