@@ -1,3 +1,4 @@
+#include <stdexcept>
 #include "DynamicArray.h"
 
 template<class T>
@@ -38,6 +39,8 @@ DynamicArray<T>::~DynamicArray() {
 
 template<class T>
 T DynamicArray<T>::Get(size_t index) const {
+    if (index >= size_) throw std::out_of_range("Index out of range");
+
     return data_[index];
 }
 
@@ -48,6 +51,8 @@ size_t DynamicArray<T>::GetSize() const {
 
 template<class T>
 void DynamicArray<T>::Set(size_t index, T value) {
+    if (index >= size_) throw std::out_of_range("Index out of range");
+
     data_[index] = value;
 }
 
