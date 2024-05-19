@@ -10,14 +10,17 @@ class LinkedList {
 private:
     struct Node {
         Node(T data);
+//        Node(const Node& other);
 
-        T operator*();
+//        T operator*();
 
 //        Node* operator->();
 
-        Node& operator++();
+//        Node& operator++();
 
-        bool operator==(const Node& other);
+//        bool operator==(const Node& other) const;
+
+//        bool operator!=(const Node& other) const;
 
         T data_;
         Node* next_, *prev_;
@@ -58,6 +61,11 @@ public:
     LinkedList<T>* GetSubList(size_t startIndex, size_t endIndex) const;
 
     LinkedList<T>* Concat(LinkedList<T> *list) const;
+
+//    Node begin() const;
+
+//    Node end() const;
+
 private:
     size_t size_;
     Node* front_, *back_;
