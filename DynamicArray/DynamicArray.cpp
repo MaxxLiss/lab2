@@ -11,7 +11,7 @@ void DynamicArray<T>::Fill(T* data, size_t size, T value) {
 template<class T>
 DynamicArray<T>::DynamicArray(size_t size)
     : size_(size)
-    , capacity_(2 * size_)
+    , capacity_(2 * size_ > 0 ? 2 * size_ : 2)
     , data_(new T[capacity_]) {
     Fill(data_, capacity_);
 }
@@ -19,7 +19,7 @@ DynamicArray<T>::DynamicArray(size_t size)
 template<class T>
 DynamicArray<T>::DynamicArray(T* items, size_t count)
     : size_(count)
-    , capacity_(2 * size_)
+    , capacity_(2 * size_ > 0 ? 2 * size_ : 2)
     , data_(new T[capacity_]) {
     Fill(data_, capacity_);
     for (size_t i = 0; i < size_; ++i) {
@@ -79,8 +79,8 @@ void DynamicArray<T>::Resize(size_t newSize) {
 
     delete[] data_;
 
-    this->data_ = newData;
-    this->size_ = newSize;
+    data_ = newData;
+    size_ = newSize;
 }
 
 template<class T>
