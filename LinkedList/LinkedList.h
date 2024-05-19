@@ -1,16 +1,66 @@
+#pragma once
+
 #ifndef LAB2_LINKEDLIST_H
 #define LAB2_LINKEDLIST_H
+
+#include <cstddef>
 
 template<class T>
 class LinkedList {
 private:
-    class Node {
+    struct Node {
+        Node(T data);
 
+        T operator*();
+
+//        Node* operator->();
+
+        Node& operator++();
+
+        bool operator==(const Node& other);
+
+        T data_;
+        Node* next_, *prev_;
     };
 
-public:
+    Node* GetNode(size_t index) const;
 
+    void Delete();
+
+    LinkedList(const Node* startNode, const Node* endNode);
+public:
+    LinkedList(T* items, size_t count);
+
+    LinkedList();
+
+    LinkedList(const LinkedList<T>& list);
+
+    ~LinkedList();
+
+    LinkedList<T>& operator=(const LinkedList<T>& other);
+
+    size_t GetLength() const;
+
+    bool IsEmpty() const;
+
+    T GetFirst() const;
+
+    T GetLast() const;
+
+    T Get(size_t index) const;
+
+    void Append(T item);
+
+    void Prepend(T item);
+
+    void InsertAt(T item, size_t index);
+
+    LinkedList<T>* GetSubList(size_t startIndex, size_t endIndex) const;
+
+    LinkedList<T>* Concat(LinkedList<T> *list) const;
 private:
+    size_t size_;
+    Node* front_, *back_;
 };
 
 #endif //LAB2_LINKEDLIST_H
