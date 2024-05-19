@@ -27,6 +27,10 @@ public:
 
     void Resize(size_t newSize);
 
+    T operator[](size_t index) const;
+
+    T& operator[](size_t index);
+
 private:
     size_t size_, capacity_;
     T* data_;

@@ -82,3 +82,17 @@ void DynamicArray<T>::Resize(size_t newSize) {
     this->data_ = newData;
     this->size_ = newSize;
 }
+
+template<class T>
+T &DynamicArray<T>::operator[](size_t index) {
+    if (index >= size_) throw std::out_of_range("Index out of range");
+
+    return data_[index];
+}
+
+template<class T>
+T DynamicArray<T>::operator[](size_t index) const {
+    if (index >= size_) throw std::out_of_range("Index out of range");
+
+    return data_[index];
+}
