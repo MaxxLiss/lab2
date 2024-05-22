@@ -4,10 +4,10 @@
 template<class T>
 LinkedList<T>::Node::Node(T data) : data_(data), next_(nullptr), prev_(nullptr) {}
 
-template<class T>
-T LinkedList<T>::Node::operator*() {
-    return data_;
-}
+//template<class T>
+//T LinkedList<T>::Node::operator*() {
+//    return data_;
+//}
 
 //template<class T>
 //LinkedList<T>::Node::Node(const Node& other) : data_(other.data_), next_(other.next_), prev_(other.prev_) {}
