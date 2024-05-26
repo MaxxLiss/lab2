@@ -96,3 +96,13 @@ T DynamicArray<T>::operator[](size_t index) const {
 
     return data_[index];
 }
+
+template<class T>
+T* DynamicArray<T>::begin() {
+    return &data_[0];
+}
+
+template<class T>
+T* DynamicArray<T>::end() {
+    return &data_[size_];
+}

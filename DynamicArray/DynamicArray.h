@@ -31,6 +31,10 @@ public:
 
     T& operator[](size_t index);
 
+    T* begin();
+
+    T* end();
+
 private:
     size_t size_, capacity_;
     T* data_;
