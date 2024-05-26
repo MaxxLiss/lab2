@@ -1,3 +1,1 @@
-//
-// Created by user on 19.05.2024.
-//
+#include "Sequence.h"
