@@ -9,27 +9,31 @@
 template<class T>
 class DynamicArray {
 private:
-    void Fill(T* data, size_t size, T value) {
+    void fillStaticArray(T* data, size_t size, T value) {
         for (size_t i = 0; i < size; ++i) {
             data[i] = value;
         }
     }
+
+    void copyStaticArray(T* copyDest, T* copySend, size_t size) {
+        for (size_t i = 0; i < size; ++i) {
+            copyDest[i] = copySend[i];
+        }
+    }
+
 public:
     explicit DynamicArray(size_t size)
             : size_(size)
             , capacity_(2 * size_ > 0 ? 2 * size_ : 2)
             , data_(new T[capacity_]) {
-        Fill(data_, capacity_);
+        fillStaticArray(data_, capacity_);
     }
 
     DynamicArray(T* items, size_t count)
             : size_(count)
             , capacity_(2 * size_ > 0 ? 2 * size_ : 2)
             , data_(new T[capacity_]) {
-        Fill(data_, capacity_);
-        for (size_t i = 0; i < size_; ++i) {
-            data_[i] = items[i];
-        }
+        copyStaticArray(data_, items, size_);
     }
 
     DynamicArray(const DynamicArray<T> &dynamicArray)
@@ -37,9 +41,7 @@ public:
             , capacity_(dynamicArray.capacity_)
             , data_(new T[capacity_]) {
 //     meow meow meow mewoew meoowoowmeow
-        for (size_t i = 0; i < capacity_; ++i) {
-            data_[i] = dynamicArray.data_[i];
-        }
+        copyStaticArray(data_, dynamicArray.data_, size_);
     }
 
     ~DynamicArray() {
@@ -52,6 +54,10 @@ public:
         return data_[index];
     }
 
+    bool IsEmpty() const {
+        return size_ == 0;
+    }
+
     size_t GetSize() const {
         return size_;
     }
@@ -62,24 +68,42 @@ public:
         data_[index] = value;
     }
 
+    void Append() {
+        Append(T());
+    }
+
+    void Append(T item) {
+        if (capacity_ == size_) {
+            Resize(capacity_ * 2);
+        }
+        data_[size_] = item;
+        ++size_;
+    }
+
     void Resize(size_t newSize) {
-        if (newSize <= capacity_) {
+        if (newSize <= size_) {
             size_ = newSize;
             return;
         }
-
-        capacity_ = newSize * 2;
-        T* newData = new T[capacity_];
-        Fill(newData, capacity_);
-
-        for (size_t i = 0; i < size_; ++i) {
-            newData[i] = data_[i];
+        if (newSize > capacity_) {
+            Reserve(2 * newSize);
+        }
+        for (size_t i = size_; i < newSize; ++i) {
+            data_[i] = T();
         }
 
-        delete[] data_;
-
-        data_ = newData;
         size_ = newSize;
+    }
+
+    void Reserve(size_t newCapacity) {
+        if (newCapacity <= capacity_) return;
+
+        capacity_ = newCapacity;
+        T* newData = new T[capacity_];
+        copyStaticArray(newCapacity, data_, size_);
+
+        delete[] data_;
+        data_ = newData;
     }
 
     T operator[](size_t index) {
