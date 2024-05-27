@@ -15,17 +15,17 @@ class Sequence {
 
     virtual T Get() = 0;
 
-    Sequence<T>* GetSubSequence(size_t startIndex, size_t endIndex) = 0;
+    virtual Sequence<T>* GetSubSequence(size_t startIndex, size_t endIndex) = 0;
 
-    size_t GetLength() = 0;
+    virtual size_t GetLength() = 0;
 
-    Sequence<T>* Append(T item) = 0;
+    virtual void Append(T item) = 0;
 
-    Sequence<T>* Prepend(T item) = 0;
+    virtual void Prepend(T item) = 0;
 
-    Sequence<T>* InsertAt(T item, size_t index) = 0;
+    virtual void InsertAt(T item, size_t index) = 0;
 
-    Sequence<T>* Concat(Sequence<T> *list) = 0;
+    virtual Sequence<T>* Concat(Sequence<T> *list) = 0;
 };
 
 #endif //LAB2_SEQUENCE_H
