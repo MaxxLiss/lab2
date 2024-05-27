@@ -9,6 +9,7 @@ template<class T>
 class LinkedList {
 private:
     struct Node {
+        Node();
         Node(T data);
 //        Node(const Node& other);
 
@@ -28,8 +29,6 @@ private:
 
     Node* GetNode(size_t index) const;
 
-    void Delete();
-
     LinkedList(const Node* startNode, const Node* endNode);
 public:
     LinkedList(T* items, size_t count);
@@ -39,6 +38,8 @@ public:
     LinkedList(const LinkedList<T>& list);
 
     ~LinkedList();
+
+    void Clear();
 
     LinkedList<T>& operator=(const LinkedList<T>& other);
 
@@ -68,7 +69,7 @@ public:
 
 private:
     size_t size_;
-    Node* front_, *back_;
+    Node *front_, *back_;
 };
 
 #endif //LAB2_LINKEDLIST_H
