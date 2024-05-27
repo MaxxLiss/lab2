@@ -13,10 +13,10 @@ public:
 
     ArraySequence() : data_() {}
 
-    ArraySequence(const Sequence<T>& sequence) {
-        data_.Reserve(sequence.GetLength());
-        for (size_t i = 0; i < sequence.GetLength(); ++i) {
-            data_.Append(sequence.Get(i));
+    ArraySequence(const ArraySequence<T>& arraySequence) {
+        data_.Reserve(arraySequence.GetLength());
+        for (size_t i = 0; i < arraySequence.GetLength(); ++i) {
+            data_.Append(arraySequence.Get(i));
         }
     }
 
@@ -81,12 +81,8 @@ public:
 
     void InsertAt(T item, size_t index) override {
         if (index >= GetLength()) throw std::out_of_range("Index out of range");
-        if (IsEmpty() || index == GetLength() - 1) {
-            Append(item);
-            return;
-        }
         data_.Append();
-        for (int i = GetLength() - 2; i >= index; --i) {
+        for (int i = GetLength() - 2; i >= (int) index; --i) {
             data_[i + 1] = data_[i];
         }
         data_[index] = item;
@@ -107,6 +103,10 @@ public:
 
     T& operator[](const size_t index) {
         return data_[index];
+    }
+
+    bool operator==(const ArraySequence<int>& other) const {
+        return this->data_ == other.data_;
     }
 
     T* begin() {
