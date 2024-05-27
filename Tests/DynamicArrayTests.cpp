@@ -128,6 +128,7 @@ namespace DynamicArrayTests {
 
         for (int i = 0; i < result.GetSize(); ++i) {
             assert(result[i] == 1);
+            assert(result.Get(i) == 1);
         }
     }
 

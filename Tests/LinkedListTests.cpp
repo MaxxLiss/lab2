@@ -186,6 +186,31 @@ namespace LinkedListTest {
         assert(linkedList.GetLast() == 9);
     }
 
+    void testIterators() {
+        int data[] = {1, 2, 3, 4, 5};
+
+        LinkedList<int> linkedList(data, 5);
+        LinkedList<int> result;
+        for (auto it : linkedList) {
+            result.Append(it);
+        }
+
+        assert(result == linkedList);
+        assert(result.GetFirst() == 1);
+        assert(result.GetLast() == 5);
+
+        for (auto &it : result) {
+            it = 1;
+        }
+
+        for (int i = 0; i < result.GetLength(); ++i) {
+            assert(result.Get(i) == 1);
+        }
+
+        assert(result.GetFirst() == 1);
+        assert(result.GetLast() == 1);
+    }
+
     void testLinkedList() {
         testEmptyList();
         testAdd();
@@ -194,5 +219,6 @@ namespace LinkedListTest {
         testSubList();
         testConcat();
         testInsertAt();
+        testIterators();
     }
 }
