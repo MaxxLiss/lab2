@@ -59,17 +59,21 @@ public:
     public:
         Iterator(Node* node) : node_(node) {}
 
-        T operator*() {
+        T operator*() const {
             return node_->data_;
         }
 
-        Node& operator++() {
+        T& operator*() {
+            return node_->data_;
+        };
+
+        Iterator& operator++() {
             node_ = node_->next_;
             return *this;
         }
 
         bool operator!=(const Iterator& other) const {
-            return node_ != &other.node_;
+            return node_ != other.node_;
         }
 
     private:
@@ -250,12 +254,24 @@ public:
         return res;
     }
 
+    bool operator==(const LinkedList<T>& other) {
+        if (size_ != other.size_) return false;
+        if (IsEmpty()) return true;
+
+        auto* curr1 = front_, *curr2 = other.front_;
+        do {
+            curr1 = curr1->next_, curr2 = curr2->next_;
+            if (curr1->data_ != curr2->data_) return false;
+        } while (curr1 != back_);
+        return true;
+    }
+
     Iterator begin() const {
-        return *front_->next_;
+        return Iterator(front_->next_);
     }
 
     Iterator end() const {
-        return *front_;
+        return Iterator(front_);
     }
 
 
