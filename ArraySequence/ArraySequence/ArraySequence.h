@@ -13,10 +13,12 @@ public:
 
     ArraySequence() : data_() {}
 
-    ArraySequence(const ArraySequence<T>& arraySequence) {
-        data_.Reserve(arraySequence.GetLength());
-        for (size_t i = 0; i < arraySequence.GetLength(); ++i) {
-            data_.Append(arraySequence.Get(i));
+    ArraySequence(const ArraySequence<T>& arraySequence) : data_(arraySequence.data_) {}
+
+    ArraySequence(const Sequence<T>& sequence) {
+        data_.Reserve(sequence.GetLength());
+        for (size_t i = 0; i < sequence.GetLength(); ++i) {
+            data_.Append(sequence.Get(i));
         }
     }
 
@@ -105,8 +107,10 @@ public:
         return data_[index];
     }
 
-    bool operator==(const ArraySequence<int>& other) const {
-        return this->data_ == other.data_;
+    bool operator==(const Sequence<int>& other) const override {
+        const auto* comp = dynamic_cast<const ArraySequence<T>*>(&other);
+        if (!comp) return false;
+        return this->data_ == comp->data_;
     }
 
     T* begin() {

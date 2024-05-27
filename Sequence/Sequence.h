@@ -29,6 +29,8 @@ public:
     virtual void InsertAt(T item, size_t index) = 0;
 
     virtual Sequence<T>* Concat(Sequence<T> *list) const = 0;
+
+    virtual bool operator==(const Sequence<T>& other) const = 0;
 };
 
 #endif //LAB2_SEQUENCE_H
