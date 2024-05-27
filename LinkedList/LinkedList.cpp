@@ -7,34 +7,34 @@ LinkedList<T>::Node::Node() : data_(), next_(nullptr), prev_(nullptr) {}
 template<class T>
 LinkedList<T>::Node::Node(T data) : data_(data), next_(nullptr), prev_(nullptr) {}
 
-//template<class T>
-//T LinkedList<T>::Node::operator*() {
-//    return data_;
-//}
+template<class T>
+T LinkedList<T>::Node::operator*() {
+    return data_;
+}
 
-//template<class T>
-//LinkedList<T>::Node::Node(const Node& other) : data_(other.data_), next_(other.next_), prev_(other.prev_) {}
+template<class T>
+LinkedList<T>::Node::Node(const Node& other) : data_(other.data_), next_(other.next_), prev_(other.prev_) {}
 
 //template<class T>
 //LinkedList<T>::Node* LinkedList<T>::Node::operator->() {
 //    return this;
 //}
 
-//template<class T>
-//LinkedList<T>::Node& LinkedList<T>::Node::operator++() {
-//    *this = Node(*this->next_);
-//    return *this;
-//}
+template<class T>
+LinkedList<T>::Node& LinkedList<T>::Node::operator++() {
+    *this = Node(*this->next_);
+    return *this;
+}
 
-//template<class T>
-//bool LinkedList<T>::Node::operator==(const LinkedList::Node &other) const {
-//    return this == &other;
-//}
+template<class T>
+bool LinkedList<T>::Node::operator==(const LinkedList::Node &other) const {
+    return this == &other;
+}
 
-//template<class T>
-//bool LinkedList<T>::Node::operator!=(const LinkedList::Node &other) const {
-//    return this != &other;
-//}
+template<class T>
+bool LinkedList<T>::Node::operator!=(const LinkedList::Node &other) const {
+    return this != &other;
+}
 
 template<class T>
 LinkedList<T>::LinkedList(T *items, size_t count)
@@ -42,13 +42,17 @@ LinkedList<T>::LinkedList(T *items, size_t count)
     , front_(new Node())
     , back_(front_) {
 
+    back_->next_ = front_;
     if (IsEmpty()) return;
 
     for (size_t i = 0; i < count; ++i) {
         auto* tmp = new Node(items[i]);
+
         back_->next_ = tmp;
         tmp->prev_ = back_;
+
         back_ = tmp;
+        back_->next_ = front_;
     }
 }
 
@@ -56,7 +60,9 @@ template<class T>
 LinkedList<T>::LinkedList()
     : size_(0)
     , front_(new Node())
-    , back_(front_) {}
+    , back_(front_) {
+    back_->next_ = front_;
+}
 
 template<class T>
 LinkedList<T>::LinkedList(const LinkedList<T> &list)
@@ -64,16 +70,19 @@ LinkedList<T>::LinkedList(const LinkedList<T> &list)
     , front_(new Node())
     , back_(front_) {
 
+    back_->next_ = front_;
     if (IsEmpty()) return;
 
     auto* curr = list.front_;
     do {
         curr = curr->next_;
-
         auto* tmp = new Node(curr->data_);
+
         back_->next_ = tmp;
         tmp->prev_ = back_;
+
         back_ = tmp;
+        back_->next_ = front_;
     } while (curr != list.back_);
 }
 
@@ -88,7 +97,7 @@ void LinkedList<T>::Clear() {
     while (!IsEmpty()) {
         back_ = back_->prev_;
         delete back_->next_;
-        back_->next_ = nullptr;
+        back_->next_ = front_;
         --size_;
     }
 }
@@ -98,15 +107,21 @@ LinkedList<T>& LinkedList<T>::operator=(const LinkedList<T> &other) {
     if (this == &other) return *this;
 
     Clear();
+    size_ = other.size_;
+    back_->next_ = front_;
+
+    if (IsEmpty()) return *this;
 
     auto* curr = other.front_;
     do {
         curr = curr->next_;
-
         auto* tmp = new Node(curr->data_);
+
         back_->next_ = tmp;
         tmp->prev_ = back_;
+
         back_ = tmp;
+        back_->next_ = front_;
     } while (curr != other.back_);
 
     size_ = other.size_;
@@ -163,7 +178,9 @@ void LinkedList<T>::Append(T item) {
 
     back_->next_ = tmp;
     tmp->prev_ = back_;
+
     back_ = tmp;
+    back_->next_ = front_;
 
     ++size_;
 }
@@ -214,6 +231,7 @@ LinkedList<T>::LinkedList(const LinkedList::Node *startNode, const LinkedList::N
     front_->next_ = new Node(startNode->data_);
     front_->next_->prev_ = front_;
     back_ = front_->next_;
+    back_->next_ = front_;
     ++size_;
 
     auto* curr = startNode;
@@ -224,6 +242,7 @@ LinkedList<T>::LinkedList(const LinkedList::Node *startNode, const LinkedList::N
         back_->next_ = tmp;
         tmp->prev_ = back_;
         back_ = tmp;
+        back_->next_ = front_;
         ++size_;
     } while (curr != endNode);
 }
@@ -252,18 +271,20 @@ LinkedList<T>* LinkedList<T>::Concat(LinkedList<T> *list) const {
     res->back_->next_ = tmp->front_->next_;
     tmp->front_->next_->prev_ = res->back_;
     res->back_ = tmp->back_;
+    res->back_->next_ = front_;
 
     res->size_ += tmp->size_;
 
     return res;
 }
 
-//template<class T>
-//LinkedList<T>::Node LinkedList<T>::begin() const {
-//    return *front_;
-//}
+template<class T>
+LinkedList<T>::Node LinkedList<T>::begin() const {
+    if (IsEmpty()) return *front_;
+    return *front_->next_;
+}
 
-//template<class T>
-//LinkedList<T>::Node LinkedList<T>::end() const {
-//    return *back_;
-//}
+template<class T>
+LinkedList<T>::Node LinkedList<T>::end() const {
+    return *front_;
+}

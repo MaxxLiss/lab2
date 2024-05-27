@@ -11,17 +11,17 @@ private:
     struct Node {
         Node();
         Node(T data);
-//        Node(const Node& other);
+        Node(const Node& other);
 
-//        T operator*();
+        T operator*();
 
 //        Node* operator->();
 
-//        Node& operator++();
+        Node& operator++();
 
-//        bool operator==(const Node& other) const;
+        bool operator==(const Node& other) const;
 
-//        bool operator!=(const Node& other) const;
+        bool operator!=(const Node& other) const;
 
         T data_;
         Node* next_, *prev_;
@@ -63,9 +63,9 @@ public:
 
     LinkedList<T>* Concat(LinkedList<T> *list) const;
 
-//    Node begin() const;
+    Node begin() const;
 
-//    Node end() const;
+    Node end() const;
 
 private:
     size_t size_;
