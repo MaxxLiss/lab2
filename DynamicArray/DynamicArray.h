@@ -9,7 +9,7 @@
 template<class T>
 class DynamicArray {
 private:
-    void fillStaticArray(T* data, size_t size, T value) {
+    void fillStaticArray(T* data, size_t size, T value = T()) {
         for (size_t i = 0; i < size; ++i) {
             data[i] = value;
         }
@@ -22,6 +22,8 @@ private:
     }
 
 public:
+    DynamicArray() : DynamicArray(0) {}
+
     explicit DynamicArray(size_t size)
             : size_(size)
             , capacity_(2 * size_ > 0 ? 2 * size_ : 2)
@@ -74,7 +76,7 @@ public:
 
     void Append(T item) {
         if (capacity_ == size_) {
-            Resize(capacity_ * 2);
+            Reserve(capacity_ * 2);
         }
         data_[size_] = item;
         ++size_;
@@ -100,13 +102,13 @@ public:
 
         capacity_ = newCapacity;
         T* newData = new T[capacity_];
-        copyStaticArray(newCapacity, data_, size_);
+        copyStaticArray(newData, data_, size_);
 
         delete[] data_;
         data_ = newData;
     }
 
-    T operator[](size_t index) {
+    T& operator[](size_t index) {
         if (index >= size_) throw std::out_of_range("Index out of range");
 
         return data_[index];
@@ -124,6 +126,14 @@ public:
 
     T* end() {
         return &data_[size_];
+    }
+
+    bool operator==(const DynamicArray<T>& other) const {
+        if (size_ != other.size_) return false;
+        for (size_t i = 0; i < size_; ++i) if (data_[i] != other.data_[i]) {
+            return false;
+        }
+        return true;
     }
 
 private:
