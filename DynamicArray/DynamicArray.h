@@ -15,7 +15,7 @@ private:
         }
     }
 public:
-    DynamicArray(size_t size)
+    explicit DynamicArray(size_t size)
             : size_(size)
             , capacity_(2 * size_ > 0 ? 2 * size_ : 2)
             , data_(new T[capacity_]) {

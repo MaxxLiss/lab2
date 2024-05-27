@@ -4,6 +4,7 @@
 #define LAB2_LINKEDLIST_H
 
 #include <cstddef>
+#include <stdexcept>
 
 template<class T>
 class LinkedList {
