@@ -10,30 +10,8 @@ template<class T>
 class LinkedList {
 private:
     struct Node {
-        Node() : data_(), next_(nullptr), prev_(nullptr) {}
-
-        Node(T data) : data_(data), next_(nullptr), prev_(nullptr) {}
-
-        Node(const Node& other) : data_(other.data_), next_(other.next_), prev_(other.prev_) {}
-
-        T operator*() {
-            return data_;
-        }
-
-//        Node* operator->();
-
-        Node& operator++() {
-            *this = Node(*this->next_);
-            return *this;
-        }
-
-        bool operator==(const LinkedList::Node &other) const {
-            return this == &other;
-        }
-
-        bool operator!=(const LinkedList::Node &other) const {
-            return this != &other;
-        }
+        Node() : Node(T()) {}
+        Node(T data) : data_(data), next_(this), prev_(this) {}
 
         T data_;
         Node* next_, *prev_;
@@ -52,7 +30,7 @@ private:
         return curr;
     }
 
-    LinkedList(const LinkedList::Node *startNode, const LinkedList::Node *endNode)
+    LinkedList(const Node *startNode, const Node *endNode)
             : size_(0)
             , front_(new Node())
             , back_(front_) {
@@ -77,13 +55,31 @@ private:
     }
 
 public:
+    class Iterator {
+    public:
+        Iterator(Node* node) : node_(node) {}
+
+        T operator*() {
+            return node_->data_;
+        }
+
+        Node& operator++() {
+            node_ = node_->next_;
+            return *this;
+        }
+
+        bool operator!=(const Iterator& other) const {
+            return node_ != &other.node_;
+        }
+
+    private:
+        Node* node_;
+    };
+
     LinkedList(T *items, size_t count)
             : size_(count)
             , front_(new Node())
             , back_(front_) {
-
-        back_->next_ = front_;
-        if (IsEmpty()) return;
 
         for (size_t i = 0; i < count; ++i) {
             auto* tmp = new Node(items[i]);
@@ -99,16 +95,13 @@ public:
     LinkedList()
             : size_(0)
             , front_(new Node())
-            , back_(front_) {
-        back_->next_ = front_;
-    }
+            , back_(front_) {}
 
     LinkedList(const LinkedList<T> &list)
             : size_(list.size_)
             , front_(new Node())
             , back_(front_) {
 
-        back_->next_ = front_;
         if (IsEmpty()) return;
 
         auto* curr = list.front_;
@@ -143,7 +136,6 @@ public:
 
         Clear();
         size_ = other.size_;
-        back_->next_ = front_;
 
         if (IsEmpty()) return *this;
 
@@ -159,7 +151,6 @@ public:
             back_->next_ = front_;
         } while (curr != other.back_);
 
-        size_ = other.size_;
         return *this;
     }
 
@@ -259,12 +250,11 @@ public:
         return res;
     }
 
-    Node begin() const {
-        if (IsEmpty()) return *front_;
+    Iterator begin() const {
         return *front_->next_;
     }
 
-    Node end() const {
+    Iterator end() const {
         return *front_;
     }
 
