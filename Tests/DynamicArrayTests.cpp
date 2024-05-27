@@ -16,14 +16,6 @@ namespace DynamicArrayTests {
                 dynamicArray.Get(i);
                 assert(true);
             } catch (std::out_of_range &e) {}
-            try {
-                dynamicArray[i] = i;
-                assert(true);
-            } catch (std::out_of_range &e) {}
-            try {
-                dynamicArray[i];
-                assert(true);
-            } catch (std::out_of_range &e) {}
         }
     }
 

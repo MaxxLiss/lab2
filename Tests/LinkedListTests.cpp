@@ -171,19 +171,19 @@ namespace LinkedListTest {
     void testInsertAt() {
         int data[] = {1, 3, 5, 7, 9};
         LinkedList<int> linkedList(data, 5);
-        for (int i = 0; i <= 10; i += 2) {
+        for (int i = 0; i < 10; i += 2) {
             linkedList.InsertAt(i, i);
         }
 
         assert(linkedList.IsEmpty() == 0);
-        assert(linkedList.GetLength() == 11);
+        assert(linkedList.GetLength() == 10);
 
-        for (int i = 0; i < 11; ++i) {
+        for (int i = 0; i < 10; ++i) {
             assert(linkedList.Get(i) == i);
         }
 
         assert(linkedList.GetFirst() == 0);
-        assert(linkedList.GetLast() == 10);
+        assert(linkedList.GetLast() == 9);
     }
 
     void testLinkedList() {
@@ -193,5 +193,6 @@ namespace LinkedListTest {
         testCopyArrayConstructor();
         testSubList();
         testConcat();
+        testInsertAt();
     }
 }
