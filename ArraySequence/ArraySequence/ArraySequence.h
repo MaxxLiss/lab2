@@ -6,19 +6,91 @@
 
 template<class T>
 class ArraySequence : public Sequence<T> {
-    ArraySequence(T* items, size_t count);
+    ArraySequence(T* items, size_t count) : data_(items, count) {}
 
-    ArraySequence();
+    ArraySequence() : data_() {}
 
-    ArraySequence(const ArraySequence<T>& arraySequence);
+    ArraySequence(const Sequence<T>& arraySequence) : data_(arraySequence.data_) {}
 
     ~ArraySequence() override = default;
 
-    T GetFirst() override;
+    bool IsEmpty() const override {
+        return data_.IsEmpty();
+    }
 
-    T GetLast() override;
+    size_t GetLength() const override {
+        return data_.GetSize();
+    }
 
-    T Get() override;
+    T GetFirst() const override {
+        return data_.Get(0);
+    }
+
+    T GetLast() const override {
+        return data_.Get(data_.GetSize() - 1);
+    }
+
+    T Get(size_t index) const override {
+        return data_.Get(index);
+    }
+
+    void Resize(size_t newSize) {
+        data_.Resize(newSize);
+    }
+
+    void Reserve(size_t newCapacity) {
+        data_.Reserve(newCapacity);
+    }
+
+    Sequence<T> *GetSubSequence(size_t startIndex, size_t endIndex) const override {
+        if (startIndex > endIndex) throw std::invalid_argument("Start can't be bigger end");
+        if (endIndex >= GetLength()) throw std::out_of_range("Index out of range");
+
+        auto * result = new ArraySequence<T>;
+        result->Resize(endIndex - startIndex + 1);
+        for (size_t i = startIndex; i <= endIndex; ++i) {
+            result->data_[i] = data_[i];
+        }
+        return result;
+    }
+
+    void Append(T item) override {
+        data_.Append(item);
+    }
+
+    void Prepend(T item) override {
+        if (IsEmpty()) {
+            Append(item);
+            return;
+        }
+
+        data_.Append();
+        for (int i = GetLength() - 2; i >= 0; --i) {
+            data_[i + 1] = data_[i];
+        }
+        data_[0] = item;
+    }
+
+    void InsertAt(T item, size_t index) override {
+        if (index >= GetLength()) throw std::out_of_range("Index out of range");
+        if (IsEmpty() || index == GetLength() - 1) {
+            Append(item);
+            return;
+        }
+        data_.Append();
+        for (int i = GetLength() - 2; i >= index; --i) {
+            data_[i + 1] = data_[i];
+        }
+        data_[index] = item;
+    }
+
+    Sequence<T> *Concat(Sequence<T> *list) const override {
+        auto* res = new ArraySequence<T>(*this);
+        res->Reserve(res->GetLength() + list->GetLength());
+        for (size_t i = 0; i < list->GetLength(); ++i) {
+            res->Append(list->Get(i));
+        }
+    }
 
 private:
     DynamicArray<T> data_;
