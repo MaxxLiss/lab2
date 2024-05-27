@@ -1,7 +1,7 @@
 #ifndef LAB2_ARRAYSEQUENCE_H
 #define LAB2_ARRAYSEQUENCE_H
 
-#include "../../Sequence/Sequence.cpp"
+#include "../../Sequence/Sequence.h"
 #include "../../DynamicArray/DynamicArray.cpp"
 
 template<class T>
