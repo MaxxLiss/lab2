@@ -264,14 +264,14 @@ public:
         return res;
     }
 
-//    Node LinkedList<T>::begin() const {
-//        if (IsEmpty()) return *front_;
-//        return *front_->next_;
-//    }
-//
-//    Node LinkedList<T>::end() const {
-//        return *front_;
-//    }
+    Node begin() const {
+        if (IsEmpty()) return *front_;
+        return *front_->next_;
+    }
+
+    Node end() const {
+        return *front_;
+    }
 
 
 private:

@@ -2,7 +2,7 @@
 #define LAB2_ARRAYSEQUENCE_H
 
 #include "../../Sequence/Sequence.h"
-#include "../../DynamicArray/DynamicArray.cpp"
+#include "../../DynamicArray/DynamicArray.h"
 
 template<class T>
 class ArraySequence : public Sequence<T> {
