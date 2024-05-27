@@ -219,11 +219,6 @@ public:
     void InsertAt(T item, size_t index) {
         if (index >= size_) throw std::out_of_range("Index out of range");
 
-        if (IsEmpty()) {
-            Append(item);
-            return;
-        }
-
         auto* curr = GetNode(index);
         auto* tmp = new Node(item);
 
