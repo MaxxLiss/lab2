@@ -2,7 +2,7 @@
 #include "LinkedList.h"
 
 template<class T>
-LinkedList<T>::Node::Node() = default;
+LinkedList<T>::Node::Node() : data_(), next_(nullptr), prev_(nullptr) {}
 
 template<class T>
 LinkedList<T>::Node::Node(T data) : data_(data), next_(nullptr), prev_(nullptr) {}
@@ -41,6 +41,9 @@ LinkedList<T>::LinkedList(T *items, size_t count)
     : size_(count)
     , front_(new Node())
     , back_(front_) {
+
+    if (IsEmpty()) return;
+
     for (size_t i = 0; i < count; ++i) {
         auto* tmp = new Node(items[i]);
         back_->next_ = tmp;
@@ -60,6 +63,8 @@ LinkedList<T>::LinkedList(const LinkedList<T> &list)
     : size_(list.size_)
     , front_(new Node())
     , back_(front_) {
+
+    if (IsEmpty()) return;
 
     auto* curr = list.front_;
     do {
@@ -84,6 +89,7 @@ void LinkedList<T>::Clear() {
         back_ = back_->prev_;
         delete back_->next_;
         back_->next_ = nullptr;
+        --size_;
     }
 }
 
@@ -154,15 +160,22 @@ T LinkedList<T>::Get(size_t index) const {
 template<class T>
 void LinkedList<T>::Append(T item) {
     auto* tmp = new Node(item);
+
     back_->next_ = tmp;
     tmp->prev_ = back_;
     back_ = tmp;
+
     ++size_;
 }
 
 template<class T>
 void LinkedList<T>::Prepend(T item) {
+    if (IsEmpty()) {
+        Append(item);
+        return;
+    }
     auto *tmp = new Node(item);
+
     front_->next_->prev_ = tmp;
     tmp->next_ = front_->next_;
 
@@ -198,6 +211,11 @@ LinkedList<T>::LinkedList(const LinkedList::Node *startNode, const LinkedList::N
     , front_(new Node())
     , back_(front_) {
 
+    front_->next_ = new Node(startNode->data_);
+    front_->next_->prev_ = front_;
+    back_ = front_->next_;
+    ++size_;
+
     auto* curr = startNode;
     do {
         curr = curr->next_;
@@ -224,17 +242,19 @@ template<class T>
 LinkedList<T>* LinkedList<T>::Concat(LinkedList<T> *list) const {
     auto* res = new LinkedList<T>(*this);
     if (res->IsEmpty()) {
+        delete res;
         res = new LinkedList<T>(*list);
         return res;
     }
     if (list->IsEmpty()) return res;
 
     auto *tmp = new LinkedList<T>(*list);
-    res->back_->next_ = tmp->front_;
-    tmp->front_->prev_ = res->back_;
+    res->back_->next_ = tmp->front_->next_;
+    tmp->front_->next_->prev_ = res->back_;
     res->back_ = tmp->back_;
 
     res->size_ += tmp->size_;
+
     return res;
 }
 
