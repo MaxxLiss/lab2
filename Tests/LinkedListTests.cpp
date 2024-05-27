@@ -1,6 +1,6 @@
 #include <iostream>
 #include <cassert>
-#include "../LinkedList/LinkedList.cpp"
+#include "../LinkedList/LinkedList.h"
 
 void testEmptyList() {
     LinkedList<int> linkedList;
