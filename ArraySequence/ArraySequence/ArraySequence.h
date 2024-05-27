@@ -1,3 +1,5 @@
+#pragma once
+
 #ifndef LAB2_ARRAYSEQUENCE_H
 #define LAB2_ARRAYSEQUENCE_H
 
@@ -6,11 +8,17 @@
 
 template<class T>
 class ArraySequence : public Sequence<T> {
+public:
     ArraySequence(T* items, size_t count) : data_(items, count) {}
 
     ArraySequence() : data_() {}
 
-    ArraySequence(const Sequence<T>& arraySequence) : data_(arraySequence.data_) {}
+    ArraySequence(const Sequence<T>& sequence) {
+        data_.Reserve(sequence.GetLength());
+        for (size_t i = 0; i < sequence.GetLength(); ++i) {
+            data_.Append(sequence.Get(i));
+        }
+    }
 
     ~ArraySequence() override = default;
 
@@ -47,9 +55,9 @@ class ArraySequence : public Sequence<T> {
         if (endIndex >= GetLength()) throw std::out_of_range("Index out of range");
 
         auto * result = new ArraySequence<T>;
-        result->Resize(endIndex - startIndex + 1);
+        result->Reserve(endIndex - startIndex + 1);
         for (size_t i = startIndex; i <= endIndex; ++i) {
-            result->data_[i] = data_[i];
+            result->Append(data_[i]);
         }
         return result;
     }
@@ -90,6 +98,23 @@ class ArraySequence : public Sequence<T> {
         for (size_t i = 0; i < list->GetLength(); ++i) {
             res->Append(list->Get(i));
         }
+        return res;
+    }
+
+    T operator[](const size_t index) const {
+        return data_[index];
+    }
+
+    T& operator[](const size_t index) {
+        return data_[index];
+    }
+
+    T* begin() {
+        return &data_[0];
+    }
+
+    T* end() {
+        return &data_[GetLength()];
     }
 
 private:
