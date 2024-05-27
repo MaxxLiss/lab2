@@ -4,36 +4,103 @@
 #define LAB2_DYNAMICARRAY_H
 
 #include <cstddef>
+#include <stdexcept>
 
 template<class T>
 class DynamicArray {
 private:
-    void Fill(T* data, size_t size, T value = T{});
-
+    void Fill(T* data, size_t size, T value) {
+        for (size_t i = 0; i < size; ++i) {
+            data[i] = value;
+        }
+    }
 public:
-    DynamicArray(T* items, size_t count);
+    DynamicArray(size_t size)
+            : size_(size)
+            , capacity_(2 * size_ > 0 ? 2 * size_ : 2)
+            , data_(new T[capacity_]) {
+        Fill(data_, capacity_);
+    }
 
-    explicit DynamicArray(size_t size);
+    DynamicArray(T* items, size_t count)
+            : size_(count)
+            , capacity_(2 * size_ > 0 ? 2 * size_ : 2)
+            , data_(new T[capacity_]) {
+        Fill(data_, capacity_);
+        for (size_t i = 0; i < size_; ++i) {
+            data_[i] = items[i];
+        }
+    }
 
-    DynamicArray(const DynamicArray<T>& dynamicArray);
+    DynamicArray(const DynamicArray<T> &dynamicArray)
+            : size_(dynamicArray.size_)
+            , capacity_(dynamicArray.capacity_)
+            , data_(new T[capacity_]) {
+//     meow meow meow mewoew meoowoowmeow
+        for (size_t i = 0; i < capacity_; ++i) {
+            data_[i] = dynamicArray.data_[i];
+        }
+    }
 
-    ~DynamicArray();
+    ~DynamicArray() {
+        delete[] data_;
+    }
 
-    T Get(size_t index) const;
+    T Get(size_t index) const {
+        if (index >= size_) throw std::out_of_range("Index out of range");
 
-    size_t GetSize() const;
+        return data_[index];
+    }
 
-    void Set(size_t index, T value);
+    size_t GetSize() const {
+        return size_;
+    }
 
-    void Resize(size_t newSize);
+    void Set(size_t index, T value) {
+        if (index >= size_) throw std::out_of_range("Index out of range");
 
-    T operator[](size_t index) const;
+        data_[index] = value;
+    }
 
-    T& operator[](size_t index);
+    void Resize(size_t newSize) {
+        if (newSize <= capacity_) {
+            size_ = newSize;
+            return;
+        }
 
-    T* begin();
+        capacity_ = newSize * 2;
+        T* newData = new T[capacity_];
+        Fill(newData, capacity_);
 
-    T* end();
+        for (size_t i = 0; i < size_; ++i) {
+            newData[i] = data_[i];
+        }
+
+        delete[] data_;
+
+        data_ = newData;
+        size_ = newSize;
+    }
+
+    T operator[](size_t index) {
+        if (index >= size_) throw std::out_of_range("Index out of range");
+
+        return data_[index];
+    }
+
+    T operator[](size_t index) const {
+        if (index >= size_) throw std::out_of_range("Index out of range");
+
+        return data_[index];
+    }
+
+    T* begin() {
+        return &data_[0];
+    }
+
+    T* end() {
+        return &data_[size_];
+    }
 
 private:
     size_t size_, capacity_;
