@@ -40,6 +40,10 @@ public:
     virtual Sequence<T>* InsertAt(T item, size_t index) = 0;
 
     virtual Sequence<T>* Concat(Sequence<T> *list) const = 0;
+
+//    virtual Iterator begin() = 0;
+//
+//    virtual Iterator end() = 0;
 };
 
 #endif //LAB2_SEQUENCE_H

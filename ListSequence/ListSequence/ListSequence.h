@@ -27,9 +27,13 @@ public:
 //        }
 //
 //        bool operator!=(const typename Sequence<T>::Iterator &other) const override {
-//            auto* tmp = dynamic_cast<typename ListSequence<T>::Iterator*>(&other);
-//            if (!tmp) return true;
-//            return iter_ != tmp->iter_;
+//            auto* tmp = dynamic_cast<ListSequenceIterator*>(&other);
+//            if (!tmp) return false;
+//            return this != *tmp;
+//        }
+//
+//        bool operator!=(const ListSequenceIterator& other) {
+//            return iter_ != other.iter_;
 //        }
 //
 //    private:
@@ -119,14 +123,13 @@ public:
         return data_.end();
     }
 
-//    ListSequenceIterator begin() {
+//    ListSequenceIterator begin() override {
 //        return { data_.begin() };
 //    }
 //
-//    ListSequenceIterator end() {
+//    ListSequenceIterator end() override {
 //        return { data_.end() };
 //    }
-
 
 private:
     LinkedList<T> data_;
