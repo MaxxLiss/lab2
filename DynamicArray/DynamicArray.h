@@ -133,6 +133,8 @@ public:
     }
 
     DynamicArray<T>& operator=(const DynamicArray<T>& other) {
+        if (&other == this) return *this;
+
         delete[] data_;
         size_ = other.size_;
         capacity_ = other.capacity_;
