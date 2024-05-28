@@ -132,6 +132,15 @@ public:
         return true;
     }
 
+    DynamicArray<T>& operator=(const DynamicArray<T>& other) {
+        delete[] data_;
+        size_ = other.size_;
+        capacity_ = other.capacity_;
+
+        data_ = new int[capacity_];
+        copyStaticArray(data_, other.data_, size_);
+    }
+
 private:
     size_t size_, capacity_;
     T* data_;
