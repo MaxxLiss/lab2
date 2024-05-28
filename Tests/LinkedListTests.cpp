@@ -1,5 +1,5 @@
-#include <iostream>
 #include <cassert>
+#include <iostream>
 #include "../LinkedList/LinkedList.h"
 
 namespace LinkedListTest {
@@ -220,5 +220,7 @@ namespace LinkedListTest {
         testConcat();
         testInsertAt();
         testIterators();
+
+        std::cout << "LinkedList has passed all the tests\n";
     }
 }

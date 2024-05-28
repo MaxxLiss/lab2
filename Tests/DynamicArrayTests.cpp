@@ -1,5 +1,6 @@
 #include "DynamicArray.h"
 
+#include <iostream>
 #include <cassert>
 
 namespace DynamicArrayTests {
@@ -143,5 +144,7 @@ namespace DynamicArrayTests {
         testSet();
         testAppend();
         testIterators();
+
+        std::cout << "DynamicArray has passed all the tests\n";
     }
 }

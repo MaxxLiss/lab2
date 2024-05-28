@@ -37,12 +37,12 @@ namespace ArraySequenceTests {
 
         ArraySequence<int> resultArray(arraySequence);
 
-        assert(arraySequence.IsEmpty() == 0);
-        assert(arraySequence.GetLength() == 5);
+        assert(resultArray.IsEmpty() == 0);
+        assert(resultArray.GetLength() == 5);
 
         for (int i = 0; i < 5; ++i) {
-            assert(arraySequence[i] == i + 1);
-            assert(arraySequence.Get(i) == i + 1);
+            assert(resultArray[i] == i + 1);
+            assert(resultArray.Get(i) == i + 1);
         }
     }
 
@@ -199,5 +199,7 @@ namespace ArraySequenceTests {
         testIterators();
         testConcat();
         testSubList();
+
+        std::cout << "ArraySequence has passed all the tests\n";
     }
 }
