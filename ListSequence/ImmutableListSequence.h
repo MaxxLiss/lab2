@@ -50,17 +50,20 @@ public:
 
     Sequence<T> *Append(T item) override {
         auto* res = new ImmutableListSequence<T>(*this);
-        return res->Append(item);
+        res->data_.Append(item);
+        return res;
     }
 
     Sequence<T> *Prepend(T item) override {
         auto* res = new ImmutableListSequence<T>(*this);
-        return res->Prepend(item);
+        res->data_.Prepend(item);
+        return res;
     }
 
     Sequence<T> *InsertAt(T item, size_t index) override {
         auto* res = new ImmutableListSequence<T>(*this);
-        return res->InsertAt(item, index);
+        res->data_.InsertAt(item, index);
+        return res;
     }
 
     Sequence<T> *Concat(Sequence<T> *list) const override {
