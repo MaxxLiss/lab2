@@ -3,8 +3,8 @@
 #ifndef LAB2_ARRAYSEQUENCE_H
 #define LAB2_ARRAYSEQUENCE_H
 
-#include "../../Sequence/Sequence.h"
-#include "../../DynamicArray/DynamicArray.h"
+#include "Sequence.h"
+#include "DynamicArray.h"
 
 template<class T>
 class ArraySequence : public Sequence<T> {
