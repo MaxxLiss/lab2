@@ -251,6 +251,8 @@ public:
 
         res->size_ += tmp->size_;
 
+        delete tmp->front_;
+
         return res;
     }
 
