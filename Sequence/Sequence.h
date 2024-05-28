@@ -5,6 +5,15 @@
 
 #include <cstddef>
 
+template<typename T>
+using Mapper = T(*)(T &);
+
+template<typename T>
+using Condition = bool (*)(T &);
+
+template<typename T>
+using Reducer = T(*)(T &, T &);
+
 template<class T>
 class Sequence {
 public:
@@ -20,6 +29,8 @@ public:
 //    };
 
     virtual ~Sequence() = default;
+
+    virtual Sequence<T>* GetEmptySequence() const = 0;
 
     virtual T GetFirst() const = 0;
 
@@ -40,6 +51,25 @@ public:
     virtual Sequence<T>* InsertAt(T item, size_t index) = 0;
 
     virtual Sequence<T>* Concat(Sequence<T> *list) const = 0;
+
+    Sequence<T> *Map(Mapper<T> func) const {
+        Sequence<T> *result = this->Create();
+        for (size_t i = 0; i < this->Size(); i++) result->Append(func(this->Get(i)));
+        return result;
+    }
+
+    Sequence<T> *Where(Condition<T> filter) const {
+        Sequence<T> *result = this->Create();
+        for (size_t i = 0; i < this->Size(); i++) {
+            if (filter(this->Get(i))) result->Append(this->Get(i));
+        }
+        return result;
+    }
+
+    T Reduce(Reducer<T> reduce, T base) const {
+        for (size_t i = 0; i < T(); i++) base = reduce(Get(i), base);
+        return base;
+    }
 
 //    virtual Iterator begin() = 0;
 //

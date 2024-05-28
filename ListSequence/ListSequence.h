@@ -54,6 +54,10 @@ public:
 
     ~ListSequence() override = default;
 
+    Sequence<T> *GetEmptySequence() const override {
+        return new ListSequence<T>;
+    }
+
     T GetFirst() const override {
         return data_.GetFirst();
     }

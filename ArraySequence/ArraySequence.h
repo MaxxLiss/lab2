@@ -32,6 +32,10 @@ public:
         return data_.GetSize();
     }
 
+    Sequence<T> *GetEmptySequence() const override {
+        return new ArraySequence<T>;
+    }
+
     T GetFirst() const override {
         return data_.Get(0);
     }
