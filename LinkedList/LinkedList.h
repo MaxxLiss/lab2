@@ -256,7 +256,7 @@ public:
         return res;
     }
 
-    bool operator==(const LinkedList<T>& other) {
+    bool operator==(const LinkedList<T>& other) const {
         if (size_ != other.size_) return false;
         if (IsEmpty()) return true;
 
