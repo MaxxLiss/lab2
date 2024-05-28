@@ -52,7 +52,7 @@ public:
         data_.Reserve(newCapacity);
     }
 
-    ArraySequence<T> *GetSubSequence(size_t startIndex, size_t endIndex) const {
+    Sequence<T> *GetSubSequence(size_t startIndex, size_t endIndex) const override {
         if (startIndex > endIndex) throw std::invalid_argument("Start can't be bigger end");
         if (endIndex >= GetLength()) throw std::out_of_range("Index out of range");
 
@@ -64,14 +64,14 @@ public:
         return result;
     }
 
-    void Append(T item) override {
+    Sequence<T>* Append(T item) override {
         data_.Append(item);
+        return this;
     }
 
-    void Prepend(T item) override {
+    Sequence<T>* Prepend(T item) override {
         if (IsEmpty()) {
-            Append(item);
-            return;
+            return Append(item);
         }
 
         data_.Append();
@@ -79,18 +79,20 @@ public:
             data_[i + 1] = data_[i];
         }
         data_[0] = item;
+        return this;
     }
 
-    void InsertAt(T item, size_t index) override {
+    Sequence<T>* InsertAt(T item, size_t index) override {
         if (index >= GetLength()) throw std::out_of_range("Index out of range");
         data_.Append();
         for (int i = GetLength() - 2; i >= (int) index; --i) {
             data_[i + 1] = data_[i];
         }
         data_[index] = item;
+        return this;
     }
 
-    ArraySequence<T> *Concat(ArraySequence<T> *arraySequence) const {
+    Sequence<T> *Concat(Sequence<T> *arraySequence) const {
         auto* res = new ArraySequence<T>(*this);
         res->Reserve(res->GetLength() + arraySequence->GetLength());
         for (size_t i = 0; i < arraySequence->GetLength(); ++i) {

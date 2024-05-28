@@ -9,6 +9,33 @@
 template<class T>
 class ListSequence : public Sequence<T> {
 public:
+//    class ListSequenceIterator : public Sequence<T>::Iterator {
+//    public:
+//        ListSequenceIterator(const typename LinkedList<T>::Iterator& iter) : iter_(iter) {}
+//
+//        T operator*() const override {
+//            return *iter_;
+//        }
+//
+//        T &operator*() override {
+//            return *iter_;
+//        }
+//
+//        typename Sequence<T>::Iterator &operator++() override {
+//            iter_++;
+//            return *this;
+//        }
+//
+//        bool operator!=(const typename Sequence<T>::Iterator &other) const override {
+//            auto* tmp = dynamic_cast<typename ListSequence<T>::Iterator*>(&other);
+//            if (!tmp) return true;
+//            return iter_ != tmp->iter_;
+//        }
+//
+//    private:
+//        typename LinkedList<T>::Iterator iter_;
+//    };
+
     ListSequence(T* items, size_t count) : data_(items, count) {}
 
     ListSequence() {}
@@ -31,7 +58,9 @@ public:
 
     Sequence<T> *GetSubSequence(size_t startIndex, size_t endIndex) const override {
         auto* result = new ListSequence<T>;
-        result->data_ = data_.GetSubList(startIndex, endIndex);
+        auto* tmp = data_.GetSubList(startIndex, endIndex);
+        result->data_ = *tmp;
+        delete tmp;
         return result;
     }
 
@@ -43,16 +72,19 @@ public:
         return data_.GetLength();
     }
 
-    void Append(T item) override {
+    Sequence<T>* Append(T item) override {
         data_.Append(item);
+        return this;
     }
 
-    void Prepend(T item) override {
+    Sequence<T>* Prepend(T item) override {
         data_.Prepend(item);
+        return this;
     }
 
-    void InsertAt(T item, size_t index) override {
+    Sequence<T>* InsertAt(T item, size_t index) override {
         data_.InsertAt(item, index);
+        return this;
     }
 
     ListSequence<T>* Concat(ListSequence<T> *list) const {
@@ -61,7 +93,7 @@ public:
         return result;
     }
 
-    Sequence<T> *Concat(Sequence<T> *list) const {
+    Sequence<T> *Concat(Sequence<T> *list) const override {
         auto* res = new ListSequence<T>(*this);
         for (size_t i = 0; i < list->GetLength(); ++i) {
             res->Append(list->Get(i));
@@ -70,7 +102,7 @@ public:
     }
 
     bool operator==(const Sequence<T> &other) const {
-        return this->data_ == other->data_;
+        return this->data_ == other->iter;
     }
 
     typename LinkedList<T>::Iterator begin() {
@@ -80,6 +112,14 @@ public:
     typename LinkedList<T>::Iterator end() {
         return data_.end();
     }
+
+//    ListSequenceIterator begin() {
+//        return { data_.begin() };
+//    }
+//
+//    ListSequenceIterator end() {
+//        return { data_.end() };
+//    }
 
 
 private:
