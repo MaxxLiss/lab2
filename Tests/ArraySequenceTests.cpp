@@ -1,6 +1,8 @@
 #include "ArraySequence.h"
 #include <iostream>
 
+#include <cassert>
+
 namespace ArraySequenceTests {
     void testEmptyArray() {
         ArraySequence<int> arraySequence;

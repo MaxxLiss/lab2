@@ -1,5 +1,7 @@
 #include "DynamicArray.h"
 
+#include <cassert>
+
 namespace DynamicArrayTests {
     void testEmptyArray() {
         DynamicArray<int> dynamicArray;
