@@ -113,8 +113,13 @@ public:
         return data_[index];
     }
 
-    bool operator==(const ArraySequence<int>& other) const {
+    bool operator==(const ArraySequence<T>& other) const {
         return this->data_ == other.data_;
+    }
+
+    ArraySequence<T>& operator=(const ArraySequence<T>& other) {
+        this->data_ = other.data_;
+        return *this;
     }
 
     T* begin() {
