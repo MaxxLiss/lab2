@@ -38,9 +38,15 @@ public:
 
     ListSequence(T* items, size_t count) : data_(items, count) {}
 
-    ListSequence() {}
+    ListSequence() = default;
 
     ListSequence(const ListSequence<T> &listSequence) : data_(listSequence.data_) {}
+
+    explicit ListSequence(const Sequence<T>& sequence) {
+        for (size_t i = 0; i < sequence.GetLength(); ++i) {
+            data_.Append(sequence.Get(i));
+        }
+    }
 
     ~ListSequence() override = default;
 

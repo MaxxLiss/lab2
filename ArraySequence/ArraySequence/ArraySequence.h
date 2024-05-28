@@ -11,7 +11,7 @@ class ArraySequence : public Sequence<T> {
 public:
     ArraySequence(T* items, size_t count) : data_(items, count) {}
 
-    ArraySequence() : data_() {}
+    ArraySequence() = default;
 
     ArraySequence(const ArraySequence<T>& arraySequence) : data_(arraySequence.data_) {}
 
