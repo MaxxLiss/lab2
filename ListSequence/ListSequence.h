@@ -119,6 +119,11 @@ public:
         return this->data_ == other->iter;
     }
 
+    ListSequence<T>& operator=(const ListSequence<T>& other) {
+        this->data_ = other.data_;
+        return *this;
+    }
+
     typename LinkedList<T>::Iterator begin() {
         return data_.begin();
     }
