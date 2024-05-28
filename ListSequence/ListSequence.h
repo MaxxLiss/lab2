@@ -72,9 +72,9 @@ public:
 
     Sequence<T> *GetSubSequence(size_t startIndex, size_t endIndex) const override {
         auto* result = new ListSequence<T>;
-        auto* tmp = data_.GetSubList(startIndex, endIndex);
-        result->data_ = *tmp;
-        delete tmp;
+        auto* resultData = data_.GetSubList(startIndex, endIndex);
+        result->data_ = *resultData;
+        delete resultData;
         return result;
     }
 
@@ -102,8 +102,10 @@ public:
     }
 
     ListSequence<T>* Concat(ListSequence<T> *list) const {
+        auto* resultData = data_.Concat(&list->data_);
         auto* result = new ListSequence<T>;
-        result->data_ = data_.Concat(list->data_);
+        result->data_ = *resultData;
+        delete resultData;
         return result;
     }
 
@@ -115,8 +117,8 @@ public:
         return res;
     }
 
-    bool operator==(const Sequence<T> &other) const {
-        return this->data_ == other->iter;
+    bool operator==(const ListSequence<T> &other) const {
+        return this->data_ == other.data_;
     }
 
     ListSequence<T>& operator=(const ListSequence<T>& other) {
