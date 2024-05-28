@@ -41,6 +41,8 @@ public:
     }
 
     T GetLast() const override {
+        if (IsEmpty()) throw std::out_of_range("Index out of range");
+
         return data_.Get(data_.GetSize() - 1);
     }
 
