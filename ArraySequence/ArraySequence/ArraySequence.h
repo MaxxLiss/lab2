@@ -52,7 +52,7 @@ public:
         data_.Reserve(newCapacity);
     }
 
-    Sequence<T> *GetSubSequence(size_t startIndex, size_t endIndex) const override {
+    ArraySequence<T> *GetSubSequence(size_t startIndex, size_t endIndex) const {
         if (startIndex > endIndex) throw std::invalid_argument("Start can't be bigger end");
         if (endIndex >= GetLength()) throw std::out_of_range("Index out of range");
 
@@ -90,11 +90,11 @@ public:
         data_[index] = item;
     }
 
-    Sequence<T> *Concat(Sequence<T> *list) const override {
+    ArraySequence<T> *Concat(ArraySequence<T> *arraySequence) const {
         auto* res = new ArraySequence<T>(*this);
-        res->Reserve(res->GetLength() + list->GetLength());
-        for (size_t i = 0; i < list->GetLength(); ++i) {
-            res->Append(list->Get(i));
+        res->Reserve(res->GetLength() + arraySequence->GetLength());
+        for (size_t i = 0; i < arraySequence->GetLength(); ++i) {
+            res->Append(arraySequence->Get(i));
         }
         return res;
     }
@@ -107,10 +107,8 @@ public:
         return data_[index];
     }
 
-    bool operator==(const Sequence<int>& other) const override {
-        const auto* comp = dynamic_cast<const ArraySequence<T>*>(&other);
-        if (!comp) return false;
-        return this->data_ == comp->data_;
+    bool operator==(const ArraySequence<int>& other) const {
+        return this->data_ == other.data_;
     }
 
     T* begin() {

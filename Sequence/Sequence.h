@@ -16,7 +16,7 @@ public:
 
     virtual T Get(size_t index) const = 0;
 
-    virtual Sequence<T>* GetSubSequence(size_t startIndex, size_t endIndex) const = 0;
+//    virtual Sequence<T>* GetSubSequence(size_t startIndex, size_t endIndex) const = 0;
 
     virtual bool IsEmpty() const = 0;
 
@@ -28,9 +28,7 @@ public:
 
     virtual void InsertAt(T item, size_t index) = 0;
 
-    virtual Sequence<T>* Concat(Sequence<T> *list) const = 0;
-
-    virtual bool operator==(const Sequence<T>& other) const = 0;
+//    virtual Sequence<T>* Concat(Sequence<T> *list) const = 0;
 };
 
 #endif //LAB2_SEQUENCE_H
