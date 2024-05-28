@@ -1,6 +1,4 @@
-//
-// Created by Admin on 28.05.2024.
-//
+#pragma once
 
 #ifndef LAB2_IMMUTABLELISTSEQUENCE_H
 #define LAB2_IMMUTABLELISTSEQUENCE_H
