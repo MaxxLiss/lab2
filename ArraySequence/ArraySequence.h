@@ -98,7 +98,7 @@ public:
         return this;
     }
 
-    Sequence<T> *Concat(Sequence<T> *arraySequence) const {
+    Sequence<T> *Concat(Sequence<T> *arraySequence) const override {
         auto* res = new ArraySequence<T>(*this);
         res->Reserve(res->GetLength() + arraySequence->GetLength());
         for (size_t i = 0; i < arraySequence->GetLength(); ++i) {
