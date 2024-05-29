@@ -276,6 +276,17 @@ void testSort() {
     delete sortedDeque;
 }
 
+//void testIter() {
+//    int data[] = {9, 8, 7, 6, 5, 4, 3, 2, 1, 0};
+//
+//    Deque<int> deque(data, 10);
+//
+//    for (auto it : deque) {
+//        std::cout << it << " ";
+//    }
+//    std::cout << '\n';
+//}
+
 void testDeque() {
     testEmptyDeque();
     testCopyArray();
@@ -291,6 +302,7 @@ void testDeque() {
     testContainsSubSequence();
     testMerge();
     testSort();
+//    testIter();
 
     std::cout << "Deque has passed all the tests\n";
 }

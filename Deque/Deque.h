@@ -80,22 +80,6 @@ private:
             return data_[first_ + index];
         }
 
-//        Segment* Concat(Segment* other) const {
-//            auto *resultData = data_.Concat(other->data_);
-//            auto *result = new Segment;
-//            result->data_ = *resultData;
-//            delete resultData;
-//            return result;
-//        }
-//
-//        Segment* GetSubSegment(size_t startIndex, size_t endIndex) const {
-//            auto *resultData = data_.GetSubSequence(startIndex, endIndex);
-//            auto *result = new Segment;
-//            result->data_ = *resultData;
-//            delete resultData;
-//            return result;
-//        }
-
         bool IsEmpty() const {
             return size_ == 0;
         }
@@ -342,7 +326,7 @@ public:
         return result;
     }
 
-    friend Deque<T>* Sort(Deque<int>* deque) {
+    friend Deque<T>* Sort(Deque<T>* deque) {
         if (deque->GetLength() <= 1) return new Deque<T>(*deque);
 
         size_t mid = (deque->GetLength() - 1) / 2;
@@ -358,6 +342,14 @@ public:
         delete left, right;
 
         return res;
+    }
+
+    friend std::ostream& operator<<(std::ostream& out, Deque<T>* deque) {
+        if (deque->IsEmpty()) out << "Deque is empty";
+        else for (size_t i = 0; i < deque->GetLength(); ++i) {
+            out << (*deque)[i] << " ";
+        }
+        return out;
     }
 
 private:
