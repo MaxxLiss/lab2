@@ -84,21 +84,28 @@ public:
     }
 
     Sequence<T> *Map(Mapper<T> func) const {
-        Sequence<T> *result = this->GetEmptySequence();
-        for (size_t i = 0; i < this->GetLength(); i++) result->Append(func(this->Get(i)));
+        Sequence<T> *result = GetEmptySequence();
+        for (size_t i = 0; i < GetLength(); i++) {
+            auto tmp = Get(i);
+            result->Append(func(tmp));
+        }
         return result;
     }
 
     Sequence<T> *Where(Condition<T> filter) const {
-        Sequence<T> *result = this->GetEmptySequence();
-        for (size_t i = 0; i < this->GetLength(); i++) {
-            if (filter(this->Get(i))) result->Append(this->Get(i));
+        Sequence<T> *result = GetEmptySequence();
+        for (size_t i = 0; i < GetLength(); i++) {
+            auto tmp = Get(i);
+            if (filter(tmp)) result->Append(tmp);
         }
         return result;
     }
 
     T Reduce(Reducer<T> reduce, T base) const {
-        for (size_t i = 0; i < T(); i++) base = reduce(Get(i), base);
+        for (size_t i = 0; i < GetLength(); i++) {
+            auto tmp = Get(i);
+            base = reduce(tmp, base);
+        }
         return base;
     }
 
