@@ -144,6 +144,76 @@ void testReduce() {
     assert(res == 10);
 }
 
+void testConcat() {
+    Deque<int> emptyDeque1, emptyDeque2;
+
+    auto *emptyResult = emptyDeque1.Concat(&emptyDeque2);
+
+    assert(emptyResult->IsEmpty() == 1);
+    assert(emptyResult->GetLength() == 0);
+
+    delete emptyResult;
+
+    int data1[] = {1, 2, 3, 4};
+    int data2[] = {5, 6, 7, 8};
+
+    int excepted[] = {1, 2, 3, 4, 5, 6, 7, 8};
+    Deque<int> deque1(data1, 4), deque2(data2, 4);
+    auto *result = deque1.Concat(&deque2);
+
+    assert(result->IsEmpty() == 0);
+    assert(result->GetLength() == 8);
+
+    for (int i = 0; i < 8; ++i) {
+        assert(result->Get(i) == excepted[i]);
+        assert((*result)[i] == excepted[i]);
+    }
+
+    assert(result->GetFirst() == 1);
+    assert(result->GetLast() == 8);
+
+    delete result;
+}
+
+void testSubDeque() {
+    int data[] = {0, 1, 2, 3, 4};
+    Deque<int> deque(data, 5);
+
+    for (int i = -5; i < 10; ++i) {
+        try {
+            deque.GetSubDeque(i, i + 5);
+        } catch (...) {}
+    }
+
+    auto *subDeque(deque.GetSubDeque(1, 3));
+
+    assert(subDeque->IsEmpty() == 0);
+    assert(subDeque->GetLength() == 3);
+
+    int excepted[] = {1, 2, 3};
+    for (int i = 0; i < 3; ++i) {
+        assert(subDeque->Get(i) == excepted[i]);
+    }
+
+    assert(subDeque->GetFirst() == 1);
+    assert(subDeque->GetLast() == 3);
+
+    delete subDeque;
+
+    subDeque = deque.GetSubDeque(0, 4);
+    assert(subDeque->IsEmpty() == 0);
+    assert(subDeque->GetLength() == 5);
+
+    for (int i = 0; i < 5; ++i) {
+        assert(subDeque->Get(i) == i);
+    }
+
+    assert(subDeque->GetFirst() == 0);
+    assert(subDeque->GetLast() == 4);
+
+    delete subDeque;
+}
+
 void testDeque() {
     testEmptyDeque();
     testCopyArray();
@@ -154,6 +224,8 @@ void testDeque() {
     testMapper();
     testWhere();
     testReduce();
+    testConcat();
+    testSubDeque();
 
     std::cout << "Deque has passed all the tests\n";
 }

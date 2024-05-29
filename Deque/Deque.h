@@ -34,6 +34,8 @@ private:
             }
         }
 
+        ~Segment() = default;
+
         Segment& operator=(const Segment& other) {
             if (this == &other) return *this;
 
@@ -201,6 +203,16 @@ public:
         return this->operator[](index);
     }
 
+    T GetFirst() const {
+        return Get(0);
+    }
+
+    T GetLast() const {
+        if (IsEmpty()) throw std::out_of_range("Index out of range");
+
+        return Get(GetLength() - 1);
+    }
+
     void Set(T item, size_t index) {
         if (index >= size_) throw std::out_of_range("Index out of range");
 
@@ -269,6 +281,26 @@ public:
             base = reduce(tmp, base);
         }
         return base;
+    }
+
+    Deque<T>* Concat(Deque<T>* other) {
+        auto* result = new Deque<T>(*this);
+        for (size_t i = 0; i < other->GetLength(); ++i) {
+            result->Append(other->Get(i));
+        }
+        return result;
+    }
+
+    Deque<T>* GetSubDeque(size_t startIndex, size_t endIndex) {
+        if (startIndex > endIndex) throw std::invalid_argument("Start can't be bigger end");
+        if (endIndex >= GetLength()) throw std::out_of_range("Index out of range");
+
+        auto* result = new Deque<T>;
+        for (size_t i = startIndex; i <= endIndex; ++i) {
+            result->Append(Get(i));
+        }
+
+        return result;
     }
 
 private:
