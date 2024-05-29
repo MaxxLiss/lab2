@@ -103,6 +103,47 @@ void testAppendPrepend() {
     }
 }
 
+void testMapper() {
+    int data[] = {0, 1, 2, 3, 4};
+    Deque<int> deque(data, 5);
+
+    auto res = deque.Map([](int& a) { return a * a;} );
+
+    assert(res->GetLength() == deque.GetLength());
+
+    int excepted[] = {0, 1, 4, 9, 16};
+    for (size_t i = 0; i < res->GetLength(); ++i) {
+        assert(res->Get(i) == excepted[i]);
+    }
+
+    delete res;
+}
+
+void testWhere() {
+    int data[] = {0, 1, 2, 3, 4, 5, 6};
+    Deque<int> deque(data, 7);
+
+    auto res = deque.Where([](int& a) { return a % 2 == 0; } );
+
+    assert(res->GetLength() == 4);
+
+    int excepted[] = {0, 2, 4, 6};
+    for (size_t i = 0; i < res->GetLength(); ++i) {
+        assert(res->Get(i) == excepted[i]);
+    }
+
+    delete res;
+}
+
+void testReduce() {
+    int data[] = {0, 1, 2, 3, 4};
+    Deque<int> deque(data, 5);
+
+    auto res = deque.Reduce([](int&a, int& b) { return a + b; }, 0 );
+
+    assert(res == 10);
+}
+
 void testDeque() {
     testEmptyDeque();
     testCopyArray();
@@ -110,6 +151,9 @@ void testDeque() {
     testAppend();
     testPrepend();
     testAppendPrepend();
+    testMapper();
+    testWhere();
+    testReduce();
 
     std::cout << "Deque has passed all the tests\n";
 }
