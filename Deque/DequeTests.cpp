@@ -147,7 +147,7 @@ void testReduce() {
 void testConcat() {
     Deque<int> emptyDeque1, emptyDeque2;
 
-    auto *emptyResult = emptyDeque1.Concat(emptyDeque2);
+    auto *emptyResult = emptyDeque1.Concat(&emptyDeque2);
 
     assert(emptyResult->IsEmpty() == 1);
     assert(emptyResult->GetLength() == 0);
@@ -159,7 +159,7 @@ void testConcat() {
 
     int excepted[] = {1, 2, 3, 4, 5, 6, 7, 8};
     Deque<int> deque1(data1, 4), deque2(data2, 4);
-    auto *result = deque1.Concat(deque2);
+    auto *result = deque1.Concat(&deque2);
 
     assert(result->IsEmpty() == 0);
     assert(result->GetLength() == 8);
@@ -221,16 +221,16 @@ void testContainsSubSequence() {
     int data2[] = {1, 2, 5};
     int data3[] = {2, 4, 5};
     Deque<int> findDeque(data2, 3);
-    assert(deque.ContainsSubSequence(findDeque));
+    assert(deque.ContainsSubSequence(&findDeque));
     findDeque = Deque<int> (data3, 3);
-    assert(deque.ContainsSubSequence(findDeque));
+    assert(deque.ContainsSubSequence(&findDeque));
 
     int data4[] = {5, 3};
     int data5[] = {3, 1};
     findDeque = Deque<int> (data4, 2);
-    assert(!deque.ContainsSubSequence(findDeque));
+    assert(!deque.ContainsSubSequence(&findDeque));
     findDeque = Deque<int> (data5, 2);
-    assert(!deque.ContainsSubSequence(findDeque));
+    assert(!deque.ContainsSubSequence(&findDeque));
 }
 
 void testMerge() {
@@ -239,7 +239,7 @@ void testMerge() {
 
     Deque<int> deque1(data1, 3), deque2(data2, 2);
 
-    auto resultDeque = Merge(deque1, deque2);
+    auto resultDeque = Merge(&deque1, &deque2);
 
     assert(resultDeque->GetLength() == 5);
     assert(resultDeque->IsEmpty() == 0);

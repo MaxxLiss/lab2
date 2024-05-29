@@ -287,10 +287,10 @@ public:
         return base;
     }
 
-    Deque<T>* Concat(const Deque<T>& other) const {
+    Deque<T>* Concat(Deque<T>* other) const {
         auto* result = new Deque<T>(*this);
-        for (size_t i = 0; i < other.GetLength(); ++i) {
-            result->Append(other.Get(i));
+        for (size_t i = 0; i < other->GetLength(); ++i) {
+            result->Append(other->Get(i));
         }
         return result;
     }
@@ -307,40 +307,42 @@ public:
         return result;
     }
 
-    bool ContainsSubSequence(const Deque<T>& other) const {
+    bool ContainsSubSequence(Deque<T>* other) const {
         size_t count = 0;
-        for (size_t i = 0; count < other.GetLength() && i < GetLength(); ++i) {
-            if (Get(i) == other.Get(count)) {
+        for (size_t i = 0; count < other->GetLength() && i < GetLength(); ++i) {
+            if (Get(i) == other->Get(count)) {
                 ++count;
             }
         }
-        return count == other.GetLength();
+        return count == other->GetLength();
     }
 
-    friend Deque<T>* Merge(const Deque<T>& left, const Deque<T>& right) {
+    friend Deque<T>* Merge(Deque<T>* left, Deque<T>* right) {
         auto* result = new Deque<T>;
 
         size_t l = 0, r = 0;
-        while (l < left.GetLength() && r < right.GetLength()) {
-            if (left.Get(l) < right.Get(r)) {
-                result->Append(left.Get(l));
+        while (l < left->GetLength() && r < right->GetLength()) {
+            if (left->Get(l) < right->Get(r)) {
+                result->Append(left->Get(l));
                 ++l;
             } else {
-                result->Append(right.Get(r));
+                result->Append(right->Get(r));
                 ++r;
             }
         }
-        while (l < left.GetLength()) {
-            result->Append(left.Get(l));
+        while (l < left->GetLength()) {
+            result->Append(left->Get(l));
             ++l;
         }
-        while (r < right.GetLength()) {
-            result->Append(right.Get(r));
+        while (r < right->GetLength()) {
+            result->Append(right->Get(r));
             ++r;
         }
 
         return result;
     }
+
+    friend Deque Sort() {}
 
 private:
     static const size_t SEGMENT_CAPACITY = 2;
