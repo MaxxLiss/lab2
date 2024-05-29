@@ -246,6 +246,9 @@ void testListSequence() {
     testIterators();
     testConcat();
     testSubList();
+    testMapper();
+    testWhere();
+    testReduce();
 
     std::cout << "ListSequence has passed all the tests\n";
 }
