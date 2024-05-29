@@ -24,6 +24,12 @@ public:
 
     ~ImmutableListSequence() override = default;
 
+    ImmutableListSequence& operator=(const ImmutableListSequence<T>& other) = delete;
+
+    bool operator==(const ImmutableListSequence<T>& other) {
+        return this->data_ == other.data_;
+    }
+
     T GetFirst() const override {
         return data_.GetFirst();
     }
@@ -36,7 +42,7 @@ public:
         return data_.Get(index);
     }
 
-    Sequence<T> *GetSubSequence(size_t startIndex, size_t endIndex) const override {
+    ImmutableListSequence<T> *GetSubSequence(size_t startIndex, size_t endIndex) const {
         return data_.GetSubSequence(startIndex, endIndex);
     }
 
@@ -66,7 +72,7 @@ public:
         return res;
     }
 
-    Sequence<T> *Concat(Sequence<T> *list) const override {
+    ImmutableListSequence<T> *Concat(ImmutableListSequence<T> *list) const {
         return data_.Concat(list);
     }
 
