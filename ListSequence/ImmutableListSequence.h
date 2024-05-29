@@ -30,12 +30,16 @@ public:
         return this->data_ == other.data_;
     }
 
+    Sequence<T> *GetEmptySequence() const override {
+        return new ImmutableListSequence<T>;
+    }
+
     T GetFirst() const override {
         return data_.GetFirst();
     }
 
     T GetLast() const override {
-        return data_.GetLength();
+        return data_.GetLast();
     }
 
     T Get(size_t index) const override {
@@ -43,7 +47,11 @@ public:
     }
 
     ImmutableListSequence<T> *GetSubSequence(size_t startIndex, size_t endIndex) const {
-        return data_.GetSubSequence(startIndex, endIndex);
+        auto* resData = data_.GetSubSequence(startIndex, endIndex);
+        auto* res = new ImmutableListSequence<T>(*this);
+        res->data_ = *resData;
+        delete resData;
+        return res;
     }
 
     bool IsEmpty() const override {
@@ -73,7 +81,11 @@ public:
     }
 
     ImmutableListSequence<T> *Concat(ImmutableListSequence<T> *list) const {
-        return data_.Concat(list);
+        auto* resultData = data_.Concat(&list->data_);
+        auto* res = new ImmutableListSequence<T>(*this);
+        res->data_ = *resultData;
+        delete resultData;
+        return res;
     }
 
 private:
