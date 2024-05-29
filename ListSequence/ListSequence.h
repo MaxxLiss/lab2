@@ -70,7 +70,7 @@ public:
         return data_.Get(index);
     }
 
-    Sequence<T> *GetSubSequence(size_t startIndex, size_t endIndex) const override {
+    ListSequence<T> *GetSubSequence(size_t startIndex, size_t endIndex) const {
         auto* result = new ListSequence<T>;
         auto* resultData = data_.GetSubList(startIndex, endIndex);
         result->data_ = *resultData;
@@ -107,14 +107,6 @@ public:
         result->data_ = *resultData;
         delete resultData;
         return result;
-    }
-
-    Sequence<T> *Concat(Sequence<T> *list) const override {
-        auto* res = new ListSequence<T>(*this);
-        for (size_t i = 0; i < list->GetLength(); ++i) {
-            res->Append(list->Get(i));
-        }
-        return res;
     }
 
     bool operator==(const ListSequence<T> &other) const {

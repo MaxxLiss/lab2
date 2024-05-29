@@ -60,7 +60,7 @@ public:
         data_.Reserve(newCapacity);
     }
 
-    Sequence<T> *GetSubSequence(size_t startIndex, size_t endIndex) const override {
+    ArraySequence<T> *GetSubSequence(size_t startIndex, size_t endIndex) const {
         if (startIndex > endIndex) throw std::invalid_argument("Start can't be bigger end");
         if (endIndex >= GetLength()) throw std::out_of_range("Index out of range");
 
@@ -100,7 +100,7 @@ public:
         return this;
     }
 
-    Sequence<T> *Concat(Sequence<T> *arraySequence) const override {
+    ArraySequence<T> *Concat(ArraySequence<T> *arraySequence) const {
         auto* res = new ArraySequence<T>(*this);
         res->Reserve(res->GetLength() + arraySequence->GetLength());
         for (size_t i = 0; i < arraySequence->GetLength(); ++i) {

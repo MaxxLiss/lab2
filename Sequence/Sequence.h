@@ -38,7 +38,16 @@ public:
 
     virtual T Get(size_t index) const = 0;
 
-    virtual Sequence<T>* GetSubSequence(size_t startIndex, size_t endIndex) const = 0;
+    Sequence<T>* GetSubSequence(size_t startIndex, size_t endIndex) {
+        if (startIndex > endIndex) throw std::invalid_argument("Start can't be bigger end");
+        if (endIndex >= GetLength()) throw std::out_of_range("Index out of range");
+
+        Sequence<T> *result = this->GetEmptySequence();
+        for (size_t i = startIndex; i <= endIndex; ++i) {
+            result->Append(Get(i));
+        }
+        return result;
+    }
 
     virtual bool IsEmpty() const = 0;
 
@@ -50,17 +59,26 @@ public:
 
     virtual Sequence<T>* InsertAt(T item, size_t index) = 0;
 
-    virtual Sequence<T>* Concat(Sequence<T> *list) const = 0;
+    virtual Sequence<T>* Concat(Sequence<T> *list) {
+        Sequence<T> *result = this->GetEmptySequence();
+        for (size_t i = 0; i < GetLength(); ++i) {
+            result->Append(Get(i));
+        }
+        for (size_t i = 0; i < list->GetLength(); ++i) {
+            result->Append(list->Get(i));
+        }
+        return result;
+    }
 
     Sequence<T> *Map(Mapper<T> func) const {
-        Sequence<T> *result = this->Create();
-        for (size_t i = 0; i < this->Size(); i++) result->Append(func(this->Get(i)));
+        Sequence<T> *result = this->GetEmptySequence();
+        for (size_t i = 0; i < this->GetLength(); i++) result->Append(func(this->Get(i)));
         return result;
     }
 
     Sequence<T> *Where(Condition<T> filter) const {
-        Sequence<T> *result = this->Create();
-        for (size_t i = 0; i < this->Size(); i++) {
+        Sequence<T> *result = this->GetEmptySequence();
+        for (size_t i = 0; i < this->GetLength(); i++) {
             if (filter(this->Get(i))) result->Append(this->Get(i));
         }
         return result;
