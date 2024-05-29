@@ -1,7 +1,18 @@
+#pragma once
+
 #ifndef LAB2_DEQUE_H
 #define LAB2_DEQUE_H
 
 #include "ArraySequence.h"
+
+template<typename T>
+using Mapper = T(*)(T &);
+
+template<typename T>
+using Condition = bool (*)(T &);
+
+template<typename T>
+using Reducer = T(*)(T &, T &);
 
 template<class T>
 class Deque {
@@ -232,6 +243,32 @@ public:
 
     bool IsEmpty() const {
         return size_ == 0;
+    }
+
+    Deque<T> *Map(Mapper<T> func) const {
+        auto *result = new Deque<T>;
+        for (size_t i = 0; i < GetLength(); i++) {
+            auto tmp = Get(i);
+            result->Append(func(tmp));
+        }
+        return result;
+    }
+
+    Deque<T> *Where(Condition<T> filter) const {
+        auto *result = new Deque<T>;
+        for (size_t i = 0; i < GetLength(); i++) {
+            auto tmp = Get(i);
+            if (filter(tmp)) result->Append(tmp);
+        }
+        return result;
+    }
+
+    T Reduce(Reducer<T> reduce, T base) const {
+        for (size_t i = 0; i < GetLength(); i++) {
+            auto tmp = Get(i);
+            base = reduce(tmp, base);
+        }
+        return base;
     }
 
 private:
