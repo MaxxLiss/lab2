@@ -342,7 +342,23 @@ public:
         return result;
     }
 
-    friend Deque Sort() {}
+    friend Deque<T>* Sort(Deque<int>* deque) {
+        if (deque->GetLength() <= 1) return new Deque<T>(*deque);
+
+        size_t mid = (deque->GetLength() - 1) / 2;
+        auto *leftUnsorted = deque->GetSubDeque(0, mid);
+        auto *rightUnsorted = deque->GetSubDeque(mid + 1, deque->GetLength() - 1);
+
+        auto* left = Sort(leftUnsorted);
+        auto* right = Sort(rightUnsorted);
+
+        delete leftUnsorted, rightUnsorted;
+
+        auto res = Merge(left, right);
+        delete left, right;
+
+        return res;
+    }
 
 private:
     static const size_t SEGMENT_CAPACITY = 2;

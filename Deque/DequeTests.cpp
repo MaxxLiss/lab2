@@ -249,7 +249,31 @@ void testMerge() {
         assert(resultDeque->Get(i) == excepted[i]);
     }
 
+    assert(resultDeque->GetFirst() == excepted[0]);
+    assert(resultDeque->GetLast() == excepted[4]);
+
     delete resultDeque;
+}
+
+void testSort() {
+    int data[] = {9, 8, 7, 6, 5, 4, 3, 2, 1, 0};
+
+    Deque<int> deque(data, 10);
+    auto* sortedDeque = Sort(&deque);
+
+    assert(sortedDeque->GetLength() == 10);
+    assert(sortedDeque->IsEmpty() == 0);
+
+    int excepted[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+    for (size_t i = 0; i < sortedDeque->GetLength(); ++i) {
+        assert((*sortedDeque)[i] == excepted[i]);
+        assert(sortedDeque->Get(i) == excepted[i]);
+    }
+
+    assert(sortedDeque->GetFirst() == excepted[0]);
+    assert(sortedDeque->GetLast() == excepted[9]);
+
+    delete sortedDeque;
 }
 
 void testDeque() {
@@ -266,6 +290,7 @@ void testDeque() {
     testSubDeque();
     testContainsSubSequence();
     testMerge();
+    testSort();
 
     std::cout << "Deque has passed all the tests\n";
 }
