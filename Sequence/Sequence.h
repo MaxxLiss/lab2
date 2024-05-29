@@ -59,7 +59,7 @@ public:
 
     virtual Sequence<T>* InsertAt(T item, size_t index) = 0;
 
-    virtual Sequence<T>* Concat(Sequence<T> *list) {
+    Sequence<T>* Concat(Sequence<T> *list) {
         Sequence<T> *result = this->GetEmptySequence();
         for (size_t i = 0; i < GetLength(); ++i) {
             result->Append(Get(i));
