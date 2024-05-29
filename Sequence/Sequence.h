@@ -17,30 +17,6 @@ using Reducer = T(*)(T &, T &);
 template<class T>
 class Sequence {
 public:
-//    template<class P>
-//    class Iterator {
-//    public:
-//        T operator*() const {
-//            return *iter_;
-//        }
-//
-//        T& operator*() {
-//            return *iter_;
-//        }
-//
-//        Iterator& operator++() {
-//            iter_++;
-//            return *this;
-//        }
-//
-//        virtual bool operator!=(const Iterator& other) {
-//            return iter_ != other.iter_;
-//        }
-//
-//    private:
-//        P* iter_;
-//    };
-
     virtual ~Sequence() = default;
 
     virtual Sequence<T>* GetEmptySequence() const = 0;
@@ -109,11 +85,13 @@ public:
         return base;
     }
 
-//    template<class P>
-//    Iterator<P> begin() {};
-//
-//    template<class P>
-//    Iterator<P> end() {};
+    friend ostream& operator<<(ostream& out, Sequence<T> *sequence) {
+        if (sequence->IsEmpty()) out << "Sequence is empty";
+        else for (size_t i = 0; i < sequence->GetLength(); ++i) {
+            out << sequence->Get(i) << " ";
+        }
+        return out;
+    }
 };
 
 #endif //LAB2_SEQUENCE_H
