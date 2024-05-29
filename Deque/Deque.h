@@ -14,7 +14,7 @@ using Condition = bool (*)(T &);
 template<typename T>
 using Reducer = T(*)(T &, T &);
 
-template<class T>
+template<class T, size_t SEGMENT_SIZE = 500>
 class Deque {
 private:
     class Segment {
@@ -353,7 +353,7 @@ public:
     }
 
 private:
-    static const size_t SEGMENT_CAPACITY = 2;
+    static const size_t SEGMENT_CAPACITY = SEGMENT_SIZE + 1;
     size_t size_;
     ArraySequence<Segment> segments_;
     size_t leftSegment, rightSegment;
