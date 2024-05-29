@@ -126,11 +126,11 @@ public:
         return data_.end();
     }
 
-//    ListSequenceIterator begin() override {
+//    Sequence<T>::template Iterator<LinkedList<T>::Iterator> begin() {
 //        return { data_.begin() };
 //    }
 //
-//    ListSequenceIterator end() override {
+//    Sequence<T>::template Iterator<LinkedList<T>::Iterator> end() {
 //        return { data_.end() };
 //    }
 

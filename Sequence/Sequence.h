@@ -17,15 +17,28 @@ using Reducer = T(*)(T &, T &);
 template<class T>
 class Sequence {
 public:
+//    template<class P>
 //    class Iterator {
 //    public:
-//        virtual T operator*() const = 0;
+//        T operator*() const {
+//            return *iter_;
+//        }
 //
-//        virtual T& operator*() = 0;
+//        T& operator*() {
+//            return *iter_;
+//        }
 //
-//        virtual Iterator& operator++() = 0;
+//        Iterator& operator++() {
+//            iter_++;
+//            return *this;
+//        }
 //
-//        virtual bool operator!=(const Iterator& other) const = 0;
+//        virtual bool operator!=(const Iterator& other) {
+//            return iter_ != other.iter_;
+//        }
+//
+//    private:
+//        P* iter_;
 //    };
 
     virtual ~Sequence() = default;
@@ -89,9 +102,11 @@ public:
         return base;
     }
 
-//    virtual Iterator begin() = 0;
+//    template<class P>
+//    Iterator<P> begin() {};
 //
-//    virtual Iterator end() = 0;
+//    template<class P>
+//    Iterator<P> end() {};
 };
 
 #endif //LAB2_SEQUENCE_H
