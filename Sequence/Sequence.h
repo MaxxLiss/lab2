@@ -3,7 +3,7 @@
 #ifndef LAB2_SEQUENCE_H
 #define LAB2_SEQUENCE_H
 
-#include <cstddef>
+#include <stdexcept>
 
 template<typename T>
 using Mapper = T(*)(T &);
