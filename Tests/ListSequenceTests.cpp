@@ -3,211 +3,214 @@
 
 #include <iostream>
 
-namespace ListSequenceTest {
-
-    void testEmptyList() {
-        ListSequence<int> listSequence;
-        assert(listSequence.GetLength() == 0);
-        assert(listSequence.IsEmpty() == 1);
+void testEmptyList() {
+    ListSequence<int> listSequence;
+    assert(listSequence.GetLength() == 0);
+    assert(listSequence.IsEmpty() == 1);
+    try {
+        listSequence.GetFirst();
+        assert(true);
+    } catch (std::out_of_range &e) {}
+    try {
+        listSequence.GetLast();
+        assert(true);
+    } catch (std::out_of_range &e) {}
+    for (int i = -5; i < 10; ++i) {
         try {
-            listSequence.GetFirst();
+            listSequence.Get(i);
             assert(true);
-        } catch (std::out_of_range &e) {}
+        } catch (...) {}
         try {
-            listSequence.GetLast();
-            assert(true);
-        } catch (std::out_of_range &e) {}
-        for (int i = -5; i < 10; ++i) {
-            try {
-                listSequence.Get(i);
-                assert(true);
-            } catch (...) {}
-            try {
-                listSequence.InsertAt(5, i);
-            } catch (...) {}
-            try {
-                listSequence.GetSubSequence(i, i + 1);
-            } catch (...) {}
-        }
+            listSequence.InsertAt(5, i);
+        } catch (...) {}
+        try {
+            listSequence.GetSubSequence(i, i + 1);
+        } catch (...) {}
+    }
+}
+
+
+void testCopyStaticArray() {
+    int data[] = {1, 2, 3, 4, 5};
+    ListSequence<int> listSequence(data, 5);
+
+    assert(listSequence.IsEmpty() == 0);
+    assert(listSequence.GetLength() == 5);
+
+    for (int i = 0; i < 5; ++i) {
+        assert(listSequence.Get(i) == i + 1);
+    }
+}
+
+void testCopyConstructor() {
+    int data[] = {1, 2, 3, 4, 5};
+    ListSequence<int> listSequence(data, 5);
+
+    ListSequence<int> resultSequence(listSequence);
+
+    assert(resultSequence.IsEmpty() == 0);
+    assert(resultSequence.GetLength() == 5);
+
+    for (int i = 0; i < 5; ++i) {
+        assert(resultSequence.Get(i) == i + 1);
+    }
+}
+
+void testAppend() {
+    int data[] = {1, 2, 3, 4, 5};
+
+    ListSequence<int> listSequence;
+    for (int i: data) {
+        listSequence.Append(i);
     }
 
+    assert(listSequence.IsEmpty() == 0);
+    assert(listSequence.GetLength() == 5);
 
-    void testCopyStaticArray() {
-        int data[] = {1, 2, 3, 4, 5};
-        ListSequence<int> listSequence(data, 5);
+    for (int i = 0; i < listSequence.GetLength(); ++i) {
+        assert(data[i] == listSequence.Get(i));
+    }
+}
 
-        assert(listSequence.IsEmpty() == 0);
-        assert(listSequence.GetLength() == 5);
+void testPrepend() {
+    int data[] = {1, 2, 3, 4, 5};
 
-        for (int i = 0; i < 5; ++i) {
-            assert(listSequence.Get(i) == i + 1);
-        }
+    ListSequence<int> listSequence;
+    for (int i: data) {
+        listSequence.Prepend(i);
     }
 
-    void testCopyConstructor() {
-        int data[] = {1, 2, 3, 4, 5};
-        ListSequence<int> listSequence(data, 5);
+    assert(listSequence.IsEmpty() == 0);
+    assert(listSequence.GetLength() == 5);
 
-        ListSequence<int> resultSequence(listSequence);
+    for (int i = 0; i < listSequence.GetLength(); ++i) {
+        assert(data[i] == listSequence.Get(4 - i));
+    }
+}
 
-        assert(resultSequence.IsEmpty() == 0);
-        assert(resultSequence.GetLength() == 5);
-
-        for (int i = 0; i < 5; ++i) {
-            assert(resultSequence.Get(i) == i + 1);
-        }
+void testInsertAt() {
+    int data[] = {1, 3, 5, 7, 9};
+    ListSequence<int> listSequence(data, 5);
+    for (int i = 0; i < 10; i += 2) {
+        listSequence.InsertAt(i, i);
     }
 
-    void testAppend() {
-        int data[] = {1, 2, 3, 4, 5};
+    assert(listSequence.IsEmpty() == 0);
+    assert(listSequence.GetLength() == 10);
 
-        ListSequence<int> listSequence;
-        for (int i : data) {
-            listSequence.Append(i);
-        }
-
-        assert(listSequence.IsEmpty() == 0);
-        assert(listSequence.GetLength() == 5);
-
-        for (int i = 0; i < listSequence.GetLength(); ++i) {
-            assert(data[i] == listSequence.Get(i));
-        }
+    for (int i = 0; i < 10; ++i) {
+        assert(listSequence.Get(i) == i);
     }
 
-    void testPrepend() {
-        int data[] = {1, 2, 3, 4, 5};
+    assert(listSequence.GetFirst() == 0);
+    assert(listSequence.GetLast() == 9);
+}
 
-        ListSequence<int> listSequence;
-        for (int i : data) {
-            listSequence.Prepend(i);
-        }
+void testIterators() {
+    int data[] = {1, 2, 3, 4, 5};
 
-        assert(listSequence.IsEmpty() == 0);
-        assert(listSequence.GetLength() == 5);
-
-        for (int i = 0; i < listSequence.GetLength(); ++i) {
-            assert(data[i] == listSequence.Get(4 - i));
-        }
+    ListSequence<int> listSequence(data, 5);
+    ListSequence<int> result;
+    for (auto it: listSequence) {
+        result.Append(it);
     }
 
-    void testInsertAt() {
-        int data[] = {1, 3, 5, 7, 9};
-        ListSequence<int> listSequence(data, 5);
-        for (int i = 0; i < 10; i += 2) {
-            listSequence.InsertAt(i, i);
-        }
+    assert(result == listSequence);
 
-        assert(listSequence.IsEmpty() == 0);
-        assert(listSequence.GetLength() == 10);
-
-        for (int i = 0; i < 10; ++i) {
-            assert(listSequence.Get(i) == i);
-        }
-
-        assert(listSequence.GetFirst() == 0);
-        assert(listSequence.GetLast() == 9);
+    for (auto &it: result) {
+        it = 1;
     }
 
-    void testIterators() {
-        int data[] = {1, 2, 3, 4, 5};
+    for (int i = 0; i < result.GetLength(); ++i) {
+        assert(result.Get(i) == 1);
+    }
+}
 
-        ListSequence<int> listSequence(data, 5);
-        ListSequence<int> result;
-        for (auto it : listSequence) {
-            result.Append(it);
-        }
+void testConcat() {
+    ListSequence<int> emptyListSequence1, emptyListSequence2;
 
-        assert(result == listSequence);
+    auto *emptyResult = emptyListSequence1.Concat(&emptyListSequence2);
 
-        for (auto &it : result) {
-            it = 1;
-        }
+    assert(emptyResult->IsEmpty() == 1);
+    assert(emptyResult->GetLength() == 0);
 
-        for (int i = 0; i < result.GetLength(); ++i) {
-            assert(result.Get(i) == 1);
-        }
+    delete emptyResult;
+
+    int data1[] = {1, 2, 3, 4};
+    int data2[] = {5, 6, 7, 8};
+
+    int excepted[] = {1, 2, 3, 4, 5, 6, 7, 8};
+    ListSequence<int> listSequence1(data1, 4), listSequence2(data2, 4);
+    auto *resultSequence = listSequence1.Concat(&listSequence2);
+
+    assert(resultSequence->IsEmpty() == 0);
+    assert(resultSequence->GetLength() == 8);
+
+    for (int i = 0; i < 8; ++i) {
+        assert(resultSequence->Get(i) == excepted[i]);
     }
 
-    void testConcat() {
-        ListSequence<int> emptyListSequence1, emptyListSequence2;
+    assert(resultSequence->GetFirst() == 1);
+    assert(resultSequence->GetLast() == 8);
 
-        auto *emptyResult = emptyListSequence1.Concat(&emptyListSequence2);
+    delete resultSequence;
+}
 
-        assert(emptyResult->IsEmpty() == 1);
-        assert(emptyResult->GetLength() == 0);
+void testSubList() {
+    int data[] = {0, 1, 2, 3, 4};
+    ListSequence<int> listSequence(data, 5);
 
-        delete emptyResult;
-
-        int data1[] = {1, 2, 3, 4};
-        int data2[] = {5, 6, 7, 8};
-
-        int excepted[] = {1, 2, 3, 4, 5, 6, 7, 8};
-        ListSequence<int> listSequence1(data1, 4), listSequence2(data2, 4);
-        auto *resultSequence = listSequence1.Concat(&listSequence2);
-
-        assert(resultSequence->IsEmpty() == 0);
-        assert(resultSequence->GetLength() == 8);
-
-        for (int i = 0; i < 8; ++i) {
-            assert(resultSequence->Get(i) == excepted[i]);
-        }
-
-        assert(resultSequence->GetFirst() == 1);
-        assert(resultSequence->GetLast() == 8);
-
-        delete resultSequence;
+    for (int i = -5; i < 10; ++i) {
+        try {
+            listSequence.GetSubSequence(i, i + 5);
+        } catch (...) {}
     }
 
-    void testSubList() {
-        int data[] = {0, 1, 2, 3, 4};
-        ListSequence<int> listSequence(data, 5);
+    auto *subListSequence = listSequence.GetSubSequence(1, 3);
 
-        for (int i = -5; i < 10; ++i) {
-            try {
-                listSequence.GetSubSequence(i, i + 5);
-            } catch (...) {}
-        }
+    assert(subListSequence->IsEmpty() == 0);
+    assert(subListSequence->GetLength() == 3);
 
-        auto* subListSequence = listSequence.GetSubSequence(1, 3);
-
-        assert(subListSequence->IsEmpty() == 0);
-        assert(subListSequence->GetLength() == 3);
-
-        int excepted[] = {1, 2, 3};
-        for (int i = 0; i < 3; ++i) {
-            assert(subListSequence->Get(i) == excepted[i]);
-        }
-
-        assert(subListSequence->GetFirst() == 1);
-        assert(subListSequence->GetLast() == 3);
-
-        delete subListSequence;
-
-        subListSequence = listSequence.GetSubSequence(0, 4);
-        assert(subListSequence->IsEmpty() == 0);
-        assert(subListSequence->GetLength() == 5);
-
-        for (int i = 0; i < 5; ++i) {
-            assert(subListSequence->Get(i) == i);
-        }
-
-        assert(subListSequence->GetFirst() == 0);
-        assert(subListSequence->GetLast() == 4);
-
-        delete subListSequence;
+    int excepted[] = {1, 2, 3};
+    for (int i = 0; i < 3; ++i) {
+        assert(subListSequence->Get(i) == excepted[i]);
     }
 
-    void testListSequence() {
-        testEmptyList();
-        testCopyStaticArray();
-        testCopyConstructor();
-        testAppend();
-        testPrepend();
-        testInsertAt();
-        testIterators();
-        testConcat();
-        testSubList();
+    assert(subListSequence->GetFirst() == 1);
+    assert(subListSequence->GetLast() == 3);
 
-        std::cout << "ListSequence has passed all the tests\n";
+    delete subListSequence;
+
+    subListSequence = listSequence.GetSubSequence(0, 4);
+    assert(subListSequence->IsEmpty() == 0);
+    assert(subListSequence->GetLength() == 5);
+
+    for (int i = 0; i < 5; ++i) {
+        assert(subListSequence->Get(i) == i);
     }
+
+    assert(subListSequence->GetFirst() == 0);
+    assert(subListSequence->GetLast() == 4);
+
+    delete subListSequence;
+}
+
+void testListSequence() {
+    testEmptyList();
+    testCopyStaticArray();
+    testCopyConstructor();
+    testAppend();
+    testPrepend();
+    testInsertAt();
+    testIterators();
+    testConcat();
+    testSubList();
+
+    std::cout << "ListSequence has passed all the tests\n";
+}
+
+int main() {
+    testListSequence();
+
+    return 0;
 }
