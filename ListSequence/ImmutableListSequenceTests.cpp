@@ -1,4 +1,4 @@
-#include "../ListSequence/ImmutableListSequence.h"
+#include "ImmutableListSequence.h"
 #include <iostream>
 
 #include <cassert>

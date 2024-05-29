@@ -1,5 +1,5 @@
 #include <cassert>
-#include "../ListSequence/ListSequence.h"
+#include "ListSequence.h"
 
 #include <iostream>
 
