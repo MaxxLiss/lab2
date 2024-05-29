@@ -9,37 +9,6 @@
 template<class T>
 class ListSequence : public Sequence<T> {
 public:
-//    class ListSequenceIterator : public Sequence<T>::Iterator {
-//    public:
-//        ListSequenceIterator(const typename LinkedList<T>::Iterator& iter) : iter_(iter) {}
-//
-//        T operator*() const override {
-//            return *iter_;
-//        }
-//
-//        T &operator*() override {
-//            return *iter_;
-//        }
-//
-//        typename Sequence<T>::Iterator &operator++() override {
-//            iter_++;
-//            return *this;
-//        }
-//
-//        bool operator!=(const typename Sequence<T>::Iterator &other) const override {
-//            auto* tmp = dynamic_cast<ListSequenceIterator*>(&other);
-//            if (!tmp) return false;
-//            return this != *tmp;
-//        }
-//
-//        bool operator!=(const ListSequenceIterator& other) {
-//            return iter_ != other.iter_;
-//        }
-//
-//    private:
-//        typename LinkedList<T>::Iterator iter_;
-//    };
-
     ListSequence(T* items, size_t count) : data_(items, count) {}
 
     ListSequence() = default;
@@ -125,14 +94,6 @@ public:
     typename LinkedList<T>::Iterator end() {
         return data_.end();
     }
-
-//    Sequence<T>::template Iterator<LinkedList<T>::Iterator> begin() {
-//        return { data_.begin() };
-//    }
-//
-//    Sequence<T>::template Iterator<LinkedList<T>::Iterator> end() {
-//        return { data_.end() };
-//    }
 
 private:
     LinkedList<T> data_;
