@@ -15,6 +15,8 @@ public:
 
     ArraySequence(const ArraySequence<T>& arraySequence) : data_(arraySequence.data_) {}
 
+    ArraySequence(size_t size) : data_(size) {}
+
     ArraySequence(const Sequence<T>& sequence) {
         data_.Reserve(sequence.GetLength());
         for (size_t i = 0; i < sequence.GetLength(); ++i) {
