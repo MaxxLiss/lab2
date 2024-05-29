@@ -29,6 +29,10 @@ public:
         return this->data_ == other.data_;
     }
 
+    Sequence<T> *GetEmptySequence() const override {
+        return new ImmutableArraySequence<T>;
+    }
+
     T GetFirst() const override {
         return data_.GetFirst();
     }
@@ -42,7 +46,11 @@ public:
     }
 
     ImmutableArraySequence<T> *GetSubSequence(size_t startIndex, size_t endIndex) const {
-        return data_.GetSubSequence(startIndex, endIndex);
+        auto* resData = data_.GetSubSequence(startIndex, endIndex);
+        auto* res = new ImmutableArraySequence<T>(*this);
+        res->data_ = *resData;
+        delete resData;
+        return res;
     }
 
     bool IsEmpty() const override {
@@ -68,21 +76,19 @@ public:
     Sequence<T> *InsertAt(T item, size_t index) override {
         auto* res = new ImmutableArraySequence<T>(*this);
         res->data_.InsertAt(item, index);
-        return res->InsertAt(item);
+        return res;
     }
 
     ImmutableArraySequence<T> *Concat(ImmutableArraySequence<T> *list) const {
-        return data_.Concat(list);
+        auto* resultData = data_.Concat(&list->data_);
+        auto* res = new ImmutableArraySequence<T>(*this);
+        res->data_ = *resultData;
+        delete resultData;
+        return res;
     }
 
     T operator[](size_t index) const {
         return data_[index];
-    }
-
-    ImmutableArraySequence* operator[](size_t index) {
-        auto* res = new ImmutableArraySequence<T>(*this);
-        res->data_[index] = index;
-        return res;
     }
 
 private:
