@@ -147,7 +147,7 @@ void testReduce() {
 void testConcat() {
     Deque<int> emptyDeque1, emptyDeque2;
 
-    auto *emptyResult = emptyDeque1.Concat(&emptyDeque2);
+    auto *emptyResult = emptyDeque1.Concat(emptyDeque2);
 
     assert(emptyResult->IsEmpty() == 1);
     assert(emptyResult->GetLength() == 0);
@@ -159,7 +159,7 @@ void testConcat() {
 
     int excepted[] = {1, 2, 3, 4, 5, 6, 7, 8};
     Deque<int> deque1(data1, 4), deque2(data2, 4);
-    auto *result = deque1.Concat(&deque2);
+    auto *result = deque1.Concat(deque2);
 
     assert(result->IsEmpty() == 0);
     assert(result->GetLength() == 8);
@@ -233,6 +233,25 @@ void testContainsSubSequence() {
     assert(!deque.ContainsSubSequence(findDeque));
 }
 
+void testMerge() {
+    int data1[] = {1, 3, 5};
+    int data2[] = {2, 4};
+
+    Deque<int> deque1(data1, 3), deque2(data2, 2);
+
+    auto resultDeque = Merge(deque1, deque2);
+
+    assert(resultDeque->GetLength() == 5);
+    assert(resultDeque->IsEmpty() == 0);
+
+    int excepted[] = {1, 2, 3, 4, 5};
+    for (int i = 0; i < resultDeque->GetLength(); ++i) {
+        assert(resultDeque->Get(i) == excepted[i]);
+    }
+
+    delete resultDeque;
+}
+
 void testDeque() {
     testEmptyDeque();
     testCopyArray();
@@ -246,6 +265,7 @@ void testDeque() {
     testConcat();
     testSubDeque();
     testContainsSubSequence();
+    testMerge();
 
     std::cout << "Deque has passed all the tests\n";
 }
