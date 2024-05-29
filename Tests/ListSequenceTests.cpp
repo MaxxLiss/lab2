@@ -195,6 +195,47 @@ void testSubList() {
     delete subListSequence;
 }
 
+void testMapper() {
+    int data[] = {0, 1, 2, 3, 4};
+    ListSequence<int> listSequence(data, 5);
+
+    auto res = listSequence.Map([](int& a) { return a * a;} );
+
+    assert(res->GetLength() == listSequence.GetLength());
+
+    int excepted[] = {0, 1, 4, 9, 16};
+    for (size_t i = 0; i < res->GetLength(); ++i) {
+        assert(res->Get(i) == excepted[i]);
+    }
+
+    delete res;
+}
+
+void testWhere() {
+    int data[] = {0, 1, 2, 3, 4, 5, 6};
+    ListSequence<int> listSequence(data, 7);
+
+    auto res = listSequence.Where([](int& a) { return a % 2 == 0; } );
+
+    assert(res->GetLength() == 4);
+
+    int excepted[] = {0, 2, 4, 6};
+    for (size_t i = 0; i < res->GetLength(); ++i) {
+        assert(res->Get(i) == excepted[i]);
+    }
+
+    delete res;
+}
+
+void testReduce() {
+    int data[] = {0, 1, 2, 3, 4};
+    ListSequence<int> listSequence(data, 5);
+
+    auto res = listSequence.Reduce([](int&a, int& b) { return a + b; }, 0 );
+
+    assert(res == 10);
+}
+
 void testListSequence() {
     testEmptyList();
     testCopyStaticArray();
