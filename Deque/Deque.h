@@ -152,12 +152,18 @@ public:
     Deque(const Deque<T>& other)
         : size_(other.size_)
         , segments_(other.segments_)
-        , leftSegment(other.leftBlock), rightSegment(other.rightBlock) {}
+        , leftSegment(other.leftSegment), rightSegment(other.rightSegment) {}
 
     Deque& operator=(const Deque<T>& other) {
         size_ = other.size_;
         segments_ = other.segments_;
         leftSegment = other.leftSegment, rightSegment = other.rightSegment;
+    }
+
+    Deque(T* items, size_t count) : Deque() {
+        for (size_t i = 0; i < count; ++i) {
+            Append(items[i]);
+        }
     }
 
     void Append(T item) {
@@ -229,7 +235,7 @@ public:
     }
 
 private:
-    static const size_t SEGMENT_CAPACITY = 500;
+    static const size_t SEGMENT_CAPACITY = 2;
     size_t size_;
     ArraySequence<Segment> segments_;
     size_t leftSegment, rightSegment;
