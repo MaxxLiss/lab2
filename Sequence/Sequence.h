@@ -4,6 +4,7 @@
 #define LAB2_SEQUENCE_H
 
 #include <stdexcept>
+#include <iostream>
 
 template<typename T>
 using Mapper = T(*)(T &);
@@ -85,7 +86,7 @@ public:
         return base;
     }
 
-    friend ostream& operator<<(ostream& out, Sequence<T> *sequence) {
+    friend std::ostream& operator<<(std::ostream& out, Sequence<T> *sequence) {
         if (sequence->IsEmpty()) out << "Sequence is empty";
         else for (size_t i = 0; i < sequence->GetLength(); ++i) {
             out << sequence->Get(i) << " ";
