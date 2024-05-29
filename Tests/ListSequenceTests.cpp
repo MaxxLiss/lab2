@@ -168,7 +168,7 @@ namespace ListSequenceTest {
             } catch (...) {}
         }
 
-        auto* subListSequence(dynamic_cast<ListSequence<int> *>(listSequence.GetSubSequence(1, 3)));
+        auto* subListSequence = listSequence.GetSubSequence(1, 3);
 
         assert(subListSequence->IsEmpty() == 0);
         assert(subListSequence->GetLength() == 3);
@@ -183,7 +183,7 @@ namespace ListSequenceTest {
 
         delete subListSequence;
 
-        subListSequence = dynamic_cast<ListSequence<int> *>(listSequence.GetSubSequence(0, 4));
+        subListSequence = listSequence.GetSubSequence(0, 4);
         assert(subListSequence->IsEmpty() == 0);
         assert(subListSequence->GetLength() == 5);
 

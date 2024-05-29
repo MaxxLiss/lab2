@@ -159,7 +159,7 @@ namespace ArraySequenceTests {
             } catch (...) {}
         }
 
-        auto* subArraySequence(dynamic_cast<ArraySequence<int> *>(arraySequence.GetSubSequence(1, 3)));
+        auto* subArraySequence(arraySequence.GetSubSequence(1, 3));
 
         assert(subArraySequence->IsEmpty() == 0);
         assert(subArraySequence->GetLength() == 3);
@@ -174,7 +174,7 @@ namespace ArraySequenceTests {
 
         delete subArraySequence;
 
-        subArraySequence = dynamic_cast<ArraySequence<int> *>(arraySequence.GetSubSequence(0, 4));
+        subArraySequence = arraySequence.GetSubSequence(0, 4);
         assert(subArraySequence->IsEmpty() == 0);
         assert(subArraySequence->GetLength() == 5);
 
