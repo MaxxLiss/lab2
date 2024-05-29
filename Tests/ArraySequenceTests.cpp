@@ -187,6 +187,46 @@ void testSubList() {
     delete subArraySequence;
 }
 
+void testMapper() {
+    int data[] = {0, 1, 2, 3, 4};
+    ArraySequence<int> arraySequence(data, 5);
+
+    auto res = arraySequence.Map([](int& a) { return a * a;} );
+
+    assert(res->GetLength() == arraySequence.GetLength());
+
+    int excepted[] = {0, 1, 4, 9, 16};
+    for (size_t i = 0; i < res->GetLength(); ++i) {
+        assert(res->Get(i) == excepted[i]);
+    }
+
+    delete res;
+}
+
+void testWhere() {
+    int data[] = {0, 1, 2, 3, 4, 5, 6};
+    ArraySequence<int> arraySequence(data, 7);
+
+    auto res = arraySequence.Where([](int& a) { return a % 2 == 0; } );
+
+    assert(res->GetLength() == 4);
+
+    int excepted[] = {0, 2, 4, 6};
+    for (size_t i = 0; i < res->GetLength(); ++i) {
+        assert(res->Get(i) == excepted[i]);
+    }
+
+    delete res;
+}
+
+void testReduce() {
+    int data[] = {0, 1, 2, 3, 4};
+    ArraySequence<int> arraySequence(data, 5);
+
+    auto res = arraySequence.Reduce([](int&a, int& b) { return a + b; }, 0 );
+
+    assert(res == 10);
+}
 
 void testArraySequence() {
     testEmptyArray();
@@ -198,6 +238,9 @@ void testArraySequence() {
     testIterators();
     testConcat();
     testSubList();
+    testMapper();
+    testWhere();
+    testReduce();
 
     std::cout << "ArraySequence has passed all the tests\n";
 }
