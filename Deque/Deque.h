@@ -168,9 +168,13 @@ public:
         , leftSegment(other.leftSegment), rightSegment(other.rightSegment) {}
 
     Deque& operator=(const Deque<T>& other) {
+        if (this == &other) return *this;
+
         size_ = other.size_;
         segments_ = other.segments_;
         leftSegment = other.leftSegment, rightSegment = other.rightSegment;
+
+        return *this;
     }
 
     Deque(T* items, size_t count) : Deque() {
@@ -283,7 +287,7 @@ public:
         return base;
     }
 
-    Deque<T>* Concat(Deque<T>* other) {
+    Deque<T>* Concat(Deque<T>* other) const {
         auto* result = new Deque<T>(*this);
         for (size_t i = 0; i < other->GetLength(); ++i) {
             result->Append(other->Get(i));
@@ -291,7 +295,7 @@ public:
         return result;
     }
 
-    Deque<T>* GetSubDeque(size_t startIndex, size_t endIndex) {
+    Deque<T>* GetSubDeque(size_t startIndex, size_t endIndex) const {
         if (startIndex > endIndex) throw std::invalid_argument("Start can't be bigger end");
         if (endIndex >= GetLength()) throw std::out_of_range("Index out of range");
 
@@ -301,6 +305,16 @@ public:
         }
 
         return result;
+    }
+
+    bool ContainsSubSequence(const Deque<T>& other) {
+        size_t count = 0;
+        for (size_t i = 0; count < other.GetLength() && i < GetLength(); ++i) {
+            if (Get(i) == other.Get(count)) {
+                ++count;
+            }
+        }
+        return count == other.GetLength();
     }
 
 private:

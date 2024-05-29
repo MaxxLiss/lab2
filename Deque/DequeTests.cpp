@@ -214,6 +214,25 @@ void testSubDeque() {
     delete subDeque;
 }
 
+void testContainsSubSequence() {
+    int data1[] = {1, 2, 3, 4, 5};
+    Deque<int> deque(data1, 5);
+
+    int data2[] = {1, 2, 5};
+    int data3[] = {2, 4, 5};
+    Deque<int> findDeque(data2, 3);
+    assert(deque.ContainsSubSequence(findDeque));
+    findDeque = Deque<int> (data3, 3);
+    assert(deque.ContainsSubSequence(findDeque));
+
+    int data4[] = {5, 3};
+    int data5[] = {3, 1};
+    findDeque = Deque<int> (data4, 2);
+    assert(!deque.ContainsSubSequence(findDeque));
+    findDeque = Deque<int> (data5, 2);
+    assert(!deque.ContainsSubSequence(findDeque));
+}
+
 void testDeque() {
     testEmptyDeque();
     testCopyArray();
@@ -226,6 +245,7 @@ void testDeque() {
     testReduce();
     testConcat();
     testSubDeque();
+    testContainsSubSequence();
 
     std::cout << "Deque has passed all the tests\n";
 }
