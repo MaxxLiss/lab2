@@ -139,7 +139,7 @@ public:
         size_ = other.size_;
         capacity_ = other.capacity_;
 
-        data_ = new int[capacity_];
+        data_ = new T[capacity_];
         copyStaticArray(data_, other.data_, size_);
     }
 
